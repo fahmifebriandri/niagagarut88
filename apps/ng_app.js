@@ -860,15 +860,18 @@ app.controller('ctrlLogin', function($rootScope,$scope,$location,$http){
 				var response = response.data;
 				var data_menu = response.menu;
 				var data_user = response.user;
+				var data_profile_toko = response.profile_toko;
 				//console.log(data_menu);
 				if(data_user.data === 0){
 					alert("User atau Password anda salah!");
 				}else{
 					var dataJSONMenu = JSON.stringify(data_menu.data);
 					var dataJSONUser = JSON.stringify(data_user.data[0]);
+					var dataJSONToko = JSON.stringify(data_profile_toko.data[0]);
 					
 					localStorage.setItem("session_app_menu", dataJSONMenu);
 					localStorage.setItem("session_user", dataJSONUser);
+					localStorage.setItem("session_toko", dataJSONToko);
 					localStorage.setItem("session_login", "true");
 					$rootScope.appMenu = data_menu.data;
 					$scope.loadViewNg('/');

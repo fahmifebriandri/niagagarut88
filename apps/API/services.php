@@ -54,6 +54,14 @@ else if($action == "appLogin"){
 									c.password = '".md5($data_user['password'])."' 
 								ORDER BY a.`parent`, a.`urut`;
 	");
+	
+	$res['profile_toko'] = db_select("
+								SELECT a.* FROM `tb_profile_toko` a
+								INNER JOIN `app_user` b ON b.id = a.id_user_owner
+								WHERE 
+								b.email = '".$data_user['email']."' and 
+								b.password = '".md5($data_user['password'])."' 
+	");
 	echo json_encode($res);
 }
 else if($action == "loadDataUser"){
