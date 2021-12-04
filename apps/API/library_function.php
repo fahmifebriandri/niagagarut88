@@ -31,6 +31,8 @@ function upload_data_to_image($data_image, $new_image_name, $old_image_name,$fol
 	list($width, $height, $type, $attr) = getimagesize($file_disp);
 	if($image_type == "png"){	
 		$im = imagecreatefrompng($file_disp);
+		imagealphablending($im, false);
+		imagesavealpha($im, true);
 		//$size = min(imagesx($im), imagesy($im));
 		$im2 = imagecrop($im, ['x' => 0, 'y' => 0, 'width' => $width, 'height' => $height]);
 		if ($im2 !== FALSE) {
