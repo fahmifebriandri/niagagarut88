@@ -31,10 +31,8 @@ function upload_data_to_image($data_image, $new_image_name, $old_image_name,$fol
 	list($width, $height, $type, $attr) = getimagesize($file_disp);
 	if($image_type == "png"){	
 		$im = imagecreatefrompng($file_disp);
-		imagealphablending($im, false);
 		//$size = min(imagesx($im), imagesy($im));
 		$im2 = imagecrop($im, ['x' => 0, 'y' => 0, 'width' => $width, 'height' => $height]);
-		imagesavealpha($im2, true);
 		if ($im2 !== FALSE) {
 			imagepng($im2, $file_disp);
 			imagedestroy($im2);
@@ -51,6 +49,24 @@ function upload_data_to_image($data_image, $new_image_name, $old_image_name,$fol
 		   $height = $width/$ratio_orig;
 		}
 		$image_p = imagecreatetruecolor($width, $height);
+		
+		
+        // integer representation of the color black (rgb: 0,0,0)
+        $background = imagecolorallocate($image_p , 0, 0, 0);
+        // removing the black from the placeholder
+        imagecolortransparent($image_p, $background);
+
+        // turning off alpha blending (to ensure alpha channel information
+        // is preserved, rather than removed (blending with the rest of the
+        // image in the form of black))
+        imagealphablending($image_p, false);
+
+        // turning on alpha channel information saving (to ensure the full range
+        // of transparency is preserved)
+        imagesavealpha($image_p, true);
+		
+		
+		
 		$image = imagecreatefrompng($filename);
 		imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
 		imagepng($image_p, $file_disp, 0);
