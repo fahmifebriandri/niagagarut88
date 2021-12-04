@@ -2,6 +2,6 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/u1005291/public_html/
-    - /bin/cp index.html $DEPLOYPATH
+    - /bin/cp index.php $DEPLOYPATH
     - /bin/cp -R apps $DEPLOYPATH
     - /bin/cp -R assets $DEPLOYPATH
