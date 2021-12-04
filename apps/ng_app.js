@@ -136,6 +136,7 @@ app.controller('ctrlIndex', function($rootScope,$scope,$location,$http,$window){
 	$rootScope.ClassBody = "";
 	$rootScope.appMenu = JSON.parse(localStorage.getItem("session_app_menu"));
 	$rootScope.session_user = {};
+	$rootScope.session_toko = {};
 	$rootScope.appPageParam = {};
 	$rootScope.data_profile = {};
 	$rootScope.data_produk_limit = {};
@@ -378,6 +379,7 @@ app.controller('ctrlIndex', function($rootScope,$scope,$location,$http,$window){
 	$scope.AppSignOut = function(){
 		localStorage.removeItem("session_app_menu");
 		localStorage.removeItem("session_user");
+		localStorage.removeItem("session_toko");
 		localStorage.removeItem("session_login");
 		$window.location.reload();
 	}
@@ -604,6 +606,7 @@ app.controller('ctrlIndex', function($rootScope,$scope,$location,$http,$window){
 		$scope.readAffiliasi();
 		$scope.cekLogin();
 		$rootScope.session_user = JSON.parse(localStorage.getItem("session_user"));
+		$rootScope.session_toko = JSON.parse(localStorage.getItem("session_toko"));
 		$scope.loadProfileToko();
 		$scope.loadProdukLimit();
 		var thisLocation = $location.path();
