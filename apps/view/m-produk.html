@@ -1,0 +1,418 @@
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	<div style="background-color: #254dc0;" ng-include="'./view/c-sidebar.html?nran=200'"></div>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+		<div ng-include="'./view/c-topbar.html?nran=200'"></div>
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+        
+        <div class="container-fluid">
+			<nav aria-label="breadcrumb">
+			  <ol class="breadcrumb" ng-bind-html="breadcrumb">
+			  </ol>
+			</nav>
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Manajemen Produk</h1>
+            <a href="javascript:void(0);" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" ng-click="addProduk();"><i class="fas fa-plus fa-sm text-white-50"></i> Tambah</a>
+          </div>
+		  <div class="row">
+			<div class="col">
+				<form class="form-inline float-right">
+				  <div class="form-group mr-sm-3 mb-2">
+					<select class="form-control form-control-sm" ng-model="data_filter.id_kategori">
+						<option value="">- Semua Kategori -</option>
+						<option ng-repeat="x in data_table_kategori" value="{{x.id}}">{{x.nama}}</option>
+					</select>
+				  </div>
+				  <button type="button" class="btn btn-sm btn-primary mb-2" ng-click="loadFilterData();"><i class="fa fa-filter"></i> Filter</button>
+				</form>
+			</div>
+		  </div>
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">List Produk</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTableProduk" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+					  <!--<th><i class="fa fa-picture-o"></i> Gambar</th>-->
+                      <th>Nama Produk</th>
+					  <th>Kategori</th>
+					  <th>Sumber Stok</th>
+					  <th>Nama Suplier</th>
+					  <th>Pengirim Produk</th>
+                      <th>Stok</th>
+					  
+                      <th>Harga Beli</th>
+					  <th>Harga Jual</th>
+					  <th>Diskon</th>
+					  <th>Grosir</th>
+					  
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+				  <tfoot>
+                    <tr>
+                      <th>#</th>
+					  <!--<th><i class="fa fa-picture-o"></i> Gambar</th>-->
+                      <th>Nama Produk</th>
+					  <th>Kategori</th>
+					  <th>Sumber Stok</th>
+					  <th>Nama Suplier</th>
+					  <th>Pengirim Produk</th>
+                      <th>Stok</th>
+					  
+                      <th>Harga Beli</th>
+					  <th>Harga Jual</th>
+					  <th>Diskon</th>
+					  <th>Grosir</th>
+					  
+                      <th>Aksi</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    <tr ng-repeat="x in data_table_produk">
+                      <td>{{ $index + 1 }}</td>
+					  <!--<td><img class="rounded d-block img-fluid display_foto_{{$index}}" ng-src="{{BASE_URL+'assets/upload/produk/display/'+((x.foto != '')?x.foto:'image_not_available.png')}}" style="width:100px;" title="(kosong)"></td>-->
+                      <td><div ng-repeat="xs in x.data_varian">{{x.nama_barang}} {{xs.nama_varian}}</div></td>
+					  <td>{{x.nama_kategori}}</td>
+					  <td>{{x.sumber_stok}}</td>
+					  <td>{{x.nama_suplier}}</td>
+					  <td>{{x.pengirim_produk}}</td>
+					  <td><div ng-repeat="xs in x.data_varian">{{(x.pengirim_produk == 'pribadi')?xs.stok:(x.pengirim_produk == 'suplier')?xs.stok_status:'';}}</div></td>
+					  
+                      <td><div ng-repeat="xs in x.data_varian">{{formatRupiah(xs.harga_beli)}}</div></td>
+                      <td><div ng-repeat="xs in x.data_varian">{{formatRupiah(xs.harga_jual)}}</div></td>
+					  <td><div ng-repeat="xs in x.data_varian">{{(xs.diskon)}}({{(xs.diskon_tipe)}})</div></td>
+					  <td>{{aktifLabel(x.stat_grosir_qty)}}</td>
+					  
+                      <td class="text-center">
+						<button type="button" class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm" ng-click="updateProduk(x);"><i class="fas fa-edit fa-sm text-white-50"></i> Edit</button>
+						<button type="button" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm" ng-click="deleteProduk(x.id_produk);"><i class="fas fa-trash fa-sm text-white-50"></i> Hapus</button>
+					  </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        
+        </div>
+        <!-- /.container-fluid -->
+		
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+      </div>
+      <!-- End of Main Content -->
+	  <div ng-include="'./view/c-footer-sticky.html?nran=200'"></div>
+    </div>
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
+<div ng-include="'./view/c-additional.html?nran=200'"></div>
+
+<!-- Modal -->
+<div class="modal" id="modalFormProduk" tabindex="-1" role="dialog" aria-labelledby="modalFormProdukLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg w-100" role="document">
+    <div class="modal-content">
+	<form ng-submit="submitFormProduk();">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalFormProdukLabel">Form Produk</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		  <div class="row">
+			  <div class="form-group col">
+				<label for="nama_barang">Nama Produk</label>
+				<input type="text" class="form-control" id="nama_barang" placeholder="" ng-model="data_form_produk.nama_barang" required="required" ng-keyup="cekNamaBarang();">
+			  </div>
+		  </div>
+		  <div class="row" ng-if="data_produk_nama_barang.length > 0">
+			  <div class="col rounded bg-secondary text-warning mx-2">
+				<b>Produk yang sudah ada:</b>
+				<ul>
+					<li ng-repeat="x in data_produk_nama_barang">{{x.nama_barang}}</li>
+				</ul>
+				<div>&nbsp;</div>
+			  </div>
+		  </div>
+		  <div class="row">
+			  <div class="form-group col-4">
+				<label for="id_kategori">Kategori</label>
+				<select class="form-control" id="id_kategori" ng-model="data_form_produk.id_kategori" required="required">
+					<option value="">- Pilih -</option>
+					<option ng-repeat="x in data_table_kategori" value="{{x.id}}">{{x.nama}}</option>
+				</select>
+			  </div>
+			  <div class="form-group col-4">
+				<label for="null">&nbsp;</label>
+				<small class="form-text text-muted">
+				  Tambah kategori di menu <br/>
+				  Master Data -> Kategori Produk
+				</small>
+			  </div>
+		  </div>
+		  <div class="row">
+			  <div class="form-group col-4">
+				<label for="sumber_stok">Sumber Produk</label>
+				<select class="form-control" id="sumber_stok" ng-model="data_form_produk.sumber_stok" ng-change="sendJenisStok();" disabled="disabled">
+					<option value="">- Pilih -</option>
+					<option value="pribadi">Pribadi</option>
+					<option value="suplier">Suplier</option>
+				</select>
+			  </div>
+			  <div class="form-group col-4" ng-if="data_form_produk.sumber_stok == 'suplier'">
+				<label for="suplier">Nama Suplier</label>
+				<select class="form-control" id="suplier" ng-model="data_form_produk.id_suplier" ng-change="changeSuplier();" required="required">
+					<option value="">- Pilih -</option>
+					<option ng-repeat="x in data_table_suplier | orderBy:nama" value="{{x.id}}">{{x.nama}}</option>
+				</select>
+			  </div>
+			  <div class="form-group col-4" ng-if="data_form_produk.sumber_stok == 'suplier'">
+				<label for="pengirim_produk">Pengirim Produk</label>
+				<select class="form-control" id="pengirim_produk" ng-model="data_form_produk.pengirim_produk" required="required">
+					<option value="">- Pilih -</option>
+					<option value="pribadi">Pribadi</option>
+					<option value="suplier">Suplier</option>
+				</select>
+			  </div>
+		  </div>
+		  <div class="form-group">
+			<label for="deskripsi">Deskripsi</label>
+			<textarea class="form-control" id="deskripsi" placeholder="" rows="7" ng-model="data_form_produk.deskripsi"></textarea>
+		  </div>
+		  <div class="row">
+			  <div class="form-group col">
+				<label for="harga"><b><i><u>Harga Jual</u></i></b></label>
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+					<span class="input-group-text" id="basic-addon2">Rp</span>
+				  </div>
+				  <input type="number" class="form-control" placeholder="" ng-model="data_form_produk.harga" ng-keyup="setHargaVarian();">
+				</div>
+			  </div>
+			  <div class="form-group col">
+				<label for="diskon"><b><i><u>Diskon</u></i></b></label>
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend" ng-if="data_form_produk.diskon_tipe == 'nilai'">
+					<span class="input-group-text" id="basic-addon2">Rp</span>
+				  </div>
+				  <input type="number" class="form-control" placeholder="" ng-model="data_form_produk.diskon" ng-keyup="setDiskonVarian();">
+				  <div class="input-group-append" ng-if="data_form_produk.diskon_tipe == 'persen'">
+					<span class="input-group-text" id="basic-addon2">%</span>
+				  </div>
+				</div>
+				<div>
+					<div class="form-check form-check-inline">
+					  <input class="form-check-input" type="radio" id="diskon_persen" value="diskon_persen" name="tipe_diskon" ng-click=" data_form_produk.diskon_tipe = 'persen' " ng-checked=" data_form_produk.diskon_tipe == 'persen' ">
+					  <label class="form-check-label" for="diskon_persen">Diskon Persen</label>
+					</div>
+					<div class="form-check form-check-inline">
+					  <input class="form-check-input" type="radio" id="diskon_nilai" value="diskon_nilai" name="tipe_diskon" ng-click=" data_form_produk.diskon_tipe = 'nilai' " ng-checked=" data_form_produk.diskon_tipe == 'nilai' ">
+					  <label class="form-check-label" for="diskon_nilai">Diskon Nilai</label>
+					</div>
+				</div>
+			  </div>
+			  <div class="form-group col">
+				<label for="varian">Varian</label>
+				<div>
+					<div class="form-check form-check-inline">
+					  <input class="form-check-input" type="checkbox" id="stat_varian" ng-model="data_form_produk.stat_varian">
+					  <label class="form-check-label" for="stat_varian">
+						Status Varian
+					  </label>
+					</div>
+				</div>
+			  </div>
+			  <div class="form-group col">
+				<label for="varian">Grosir</label>
+				<div>
+					<div class="form-check form-check-inline">
+					  <input class="form-check-input" type="checkbox" id="grosir_qty" ng-model="data_form_produk.grosir_qty">
+					  <label class="form-check-label" for="grosir_qty">
+						Per Quantity
+					  </label>
+					</div>
+				</div>
+			  </div>
+		  </div>
+		  <div class="row">
+              <label for="null" class="font-weight-bold">Detail Item/Varian</label>
+			  <div class="table-responsive">
+                <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+					  <!--<th><i class="fa fa-picture-o"></i></th>-->
+                      <th>Spesifikasi</th>
+                      <th>Harga</th>
+					  <th ng-if="data_form_produk.stat_varian == true">Varian</th>
+					  <th ng-if="data_form_produk.pengirim_produk != NULL ">Stok</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="x in data_form_produk.data_varian">
+                      <td>
+						  <div class="form-group">
+							<label for="">&nbsp;</label>
+							<button type="button" class="d-none d-sm-inline-block btn btn-sm btn-flat btn-danger shadow-sm" ng-click="deleteVarian(x);"><i class="fas fa-times fa-sm text-white-50"></i></button>
+						  </div>
+					  </td>
+					  <!--	-->
+					  <td>
+						  <div class="form-group">
+							<img class="rounded d-block img-fluid display_foto_{{$index}}" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22200%22%20height%3D%22200%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20200%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_16ba5f6da00%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A10pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_16ba5f6da00%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2274.421875%22%20y%3D%22104.5%22%3ENone%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" style="width:100px;">
+						  </div>
+						  <div class="form-group">
+							<input type="file" class="form-control-file" id="foto_{{$index}}" data-index="{{$index}}" accept=".jpg,.png" ng-required="data_form_produk.action == 'addProduk'" onchange="angular.element(this).scope().getFileFoto(this);">
+						  </div>
+					  </td>
+					  <!--	-->
+                      <td>
+						<div class="form-group">
+							<label for="berat_{{$index}}">Berat</label>
+							<div class="input-group">
+							  <input type="number" class="form-control" id="berat_{{$index}}" required="required" ng-model="data_form_produk.data_varian[$index].berat">
+							  <div class="input-group-append">
+								<span class="input-group-text">gr</span>
+							  </div>
+							</div>
+						</div>
+					  </td>
+					  <td>
+						  <div class="form-group">
+							<label for="harga_beli_{{$index}}">Harga Beli</label>
+							<input type="number" class="form-control" id="harga_beli_{{$index}}" required="required" ng-model="data_form_produk.data_varian[$index].harga_beli">
+						  </div>
+						  <div class="form-group">
+							<label for="harga_jual_{{$index}}">Harga Jual</label>
+							<input type="number" class="form-control" id="harga_jual_{{$index}}" required="required" ng-model="data_form_produk.data_varian[$index].harga_jual">
+						  </div>
+						  <div class="form-group">
+							<label for="diskon_{{$index}}">Diskon</label>
+							<div class="input-group">
+							  <div class="input-group-prepend" ng-if="data_form_produk.diskon_tipe == 'nilai'">
+								<span class="input-group-text">Rp</span>
+							  </div>
+							  <input type="number" class="form-control" id="diskon_{{$index}}" required="required" ng-model="data_form_produk.data_varian[$index].diskon">
+							  <div class="input-group-append" ng-if="data_form_produk.diskon_tipe == 'persen'">
+								<span class="input-group-text">%</span>
+							  </div>
+							</div>
+						</div>
+					  </td>
+                      <td ng-if="data_form_produk.stat_varian == true">
+						  <div class="form-group" ng-if="data_form_produk.stat_varian == true">
+							<label for="nama_varian_{{$index}}">Nama Varian</label>
+							<input type="text" class="form-control" id="nama_varian_{{$index}}" required="required" ng-model="data_form_produk.data_varian[$index].nama_varian">
+						  </div>
+					  </td>
+                      <td ng-if="data_form_produk.pengirim_produk != NULL ">
+						  <div class="form-group" ng-if="data_form_produk.pengirim_produk == 'pribadi'">
+							<label for="stok_{{$index}}">Jumlah</label>
+							<input type="number" class="form-control" id="stok_{{$index}}" required="required" ng-model="data_form_produk.data_varian[$index].stok">
+						  </div>
+						  <div class="form-group" ng-if="data_form_produk.pengirim_produk == 'suplier'">
+							<label for="stok_status_{{$index}}">Status Stok</label>
+							<select class="form-control" id="stok_status_{{$index}}" required="required" ng-model="data_form_produk.data_varian[$index].stok_status">
+								<option value="">Pilih</option>
+								<option value="tersedia">Tersedia</option>
+								<option value="habis">Habis</option>
+							</select>
+						  </div>
+					  </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+		  </div>
+		  <div class="row" ng-if="data_form_produk.stat_varian == true">
+			<div class="col text-center">
+				<button type="button" class="btn btn-sm btn-flat btn-success" ng-click="addVarian();">Tambah Varian</button>
+			</div>
+		  </div>
+		  <div class="row" ng-if="data_form_produk.grosir_qty == true">
+              <div class="col">
+				  <label for="null" class="font-weight-bold">Harga Grosir</label>
+				  <div class="table-responsive">
+					<table class="table table-striped table-bordered" id="dataTable" cellspacing="0">
+					  <thead>
+						<tr class="text-center">
+						  <th colspan="3">Rentang<br/>(Qty Awal s/d Qty Akhir)</th>
+						  <th>Harga Satuan</th>
+						</tr>
+					  </thead>
+					  <tbody>
+						<tr ng-repeat="x in data_form_produk.data_grosir">
+						  <td>
+							  <div class="form-group">
+								<input type="number" class="form-control form-control-sm" id="rentang_mulai_{{$index}}" ng-model="data_form_produk.data_grosir[$index].rentang_mulai" ng-required="data_form_produk.data_grosir[$index].harga_satuan > 0" min="2">
+							  </div>
+						  </td>
+						  <td>
+							s/d
+						  </td>
+						  <td>
+							  <div class="form-group">
+								<input type="number" class="form-control form-control-sm" id="rentang_akhir_{{$index}}" ng-model="data_form_produk.data_grosir[$index].rentang_akhir">
+							  </div>
+						  </td>
+						  <td>
+							  <div class="form-group">
+								<input type="number" class="form-control form-control-sm" id="harga_satuan_{{$index}}" ng-model="data_form_produk.data_grosir[$index].harga_satuan" ng-required="data_form_produk.data_grosir[$index].rentang_mulai > 0">
+							  </div>
+						  </td>
+						</tr>
+					  </tbody>
+					</table>
+				  </div>
+			  </div>
+			  <div class="col pt-5">
+				<label for="null">Keterangan:</label>
+				<small class="form-text text-muted">
+				  Rentang jumlah yang di input berapapun akan mengganti nilai harga jual satuan produk seluruh varian. <br/> <br/>
+				  Contoh: <br/>
+				  1 s/d 10 <br/>
+				  11 s/d 20 <br/>
+				  21 s/d 30 <br/>
+				  <br/>
+				  Rentang <b>Qty Awal</b> min <b>2</b>. <br/> <br/>
+				  Rentang <b>Qty Akhir</b> jika di kosongkan maka akan diartikan sebagai <b>tidak terbatas</b>. <br/> <br/>
+				</small>
+			  </div>
+		  </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+	</form>
+    </div>
+  </div>
+</div>
+<script>
+/*
+$('#modalFormProduk').on('hidden.bs.modal', function (e) {
+    var scope = angular.element($(this)).scope();
+    scope.$apply(function(){
+        scope.loadDataProduk();
+    });
+})
+*/
+$(document).ready(function(){
+	
+});
+</script>

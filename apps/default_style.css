@@ -1,0 +1,107 @@
+.logo-app{
+    background-image: url(./assets/logo_app.png);
+    height: 80px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: auto;
+}
+.loading-base{
+	background-color:#333;width:100%;height:100%;opacity:0.9;position:fixed;top:0px;
+	left:0px;z-index:2000;justify-content:center;align-items:center;
+	display:none;
+}
+.loading-base .fa-spinner:before {
+    color: rgb(183, 141, 50);
+}
+.bg-login-image, .bg-password-image, .bg-register-image{
+	background:url("https://www.worldatlas.com/r/w728-h425-c728x425/upload/32/ed/dd/shutterstock-611361698.jpg");
+}
+.nomargin{
+	margin: 0px;
+}
+.nopadding{
+	padding: 0px;
+}
+.centerX{
+	left: 50%;
+	transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+	-moz-transform: translateX(-50%);
+	-o-transform: translateX(-50%);
+	position: absolute;
+}
+.centerY{
+	top: 50%;
+	transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+	-o-transform: translateY(-50%);
+	position: absolute;
+}
+.centerXY{
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	-o-transform: translate(-50%, -50%);
+	position: absolute;
+}
+.v-align{
+	max-width: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+	-o-transform: translateY(-50%);
+}
+.h-align{
+	max-width: 100%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+	-moz-transform: translateX(-50%);
+	-o-transform: translateX(-50%);
+}
+.bounce {
+  display: inline-block;
+  position: relative;
+  -moz-animation: bounce 0.5s infinite linear;
+  -o-animation: bounce 0.5s infinite linear;
+  -webkit-animation: bounce 0.5s infinite linear;
+  animation: bounce 0.5s infinite linear;
+  colr:000;
+}
+@-webkit-keyframes bounce {
+    0% { top: 0; }
+    50% { top: -0.2em; }
+    70% { top: -0.3em; }
+    100% { top: 0; }
+}
+@-moz-keyframes bounce {
+    0% { top: 0; }
+    50% { top: -0.2em; }
+    70% { top: -0.3em; }
+    100% { top: 0; }
+}
+@-o-keyframes bounce {
+    0% { top: 0; }
+    50% { top: -0.2em; }
+    70% { top: -0.3em; }
+    100% { top: 0; }
+}
+@-ms-keyframes bounce {
+    0% { top: 0; }
+    50% { top: -0.2em; }
+    70% { top: -0.3em; }
+    100% { top: 0; }
+}
+@keyframes bounce {
+    0% { top: 0; }
+    50% { top: -0.2em; }
+    70% { top: -0.3em; }
+    100% { top: 0; }
+}

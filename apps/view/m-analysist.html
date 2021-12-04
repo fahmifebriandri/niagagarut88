@@ -1,0 +1,248 @@
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	<div style="background-color: #254dc0;" ng-include="'./view/c-sidebar.html?nran=200'"></div>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+		<div ng-include="'./view/c-topbar.html?nran=200'"></div>
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+        
+        <div class="container-fluid">
+			<nav aria-label="breadcrumb">
+			  <ol class="breadcrumb" ng-bind-html="breadcrumb">
+			  </ol>
+			</nav>
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Laporan Analysist</h1>
+          </div>
+		  <div class="row">
+			<div class="col-12">
+				<form class="form-inline float-right">
+				  <div class="form-group mr-sm-3 mb-2">
+					<select class="form-control form-control-sm" ng-model="data_filter.date_type">
+						<option value="by_date">By Date</option>
+						<option value="by_month">By Month</option>
+					</select>
+				  </div>
+				  <div class="form-group mr-sm-3 mb-2" ng-if="data_filter.date_type == 'by_month'">
+					<select class="form-control form-control-sm" ng-model="data_filter.bulan">
+						<option value="1">January</option>
+						<option value="2">February</option>
+						<option value="3">Maret</option>
+						<option value="4">April</option>
+						<option value="5">Mei</option>
+						<option value="6">Juni</option>
+						<option value="7">Juli</option>
+						<option value="8">Agustus</option>
+						<option value="9">September</option>
+						<option value="10">Oktober</option>
+						<option value="11">November</option>
+						<option value="12">Desember</option>
+					</select>
+				  </div>
+				  <div class="form-group mr-sm-3 mb-2" ng-if="data_filter.date_type == 'by_month'">
+					<select class="form-control form-control-sm" ng-model="data_filter.tahun">
+						<option value="2018">2018</option>
+						<option value="2019">2019</option>
+						<option value="2020">2020</option>
+						<option value="2021">2021</option>
+					</select>
+				  </div>
+				  <div class="form-group mr-sm-3 mb-2" ng-if="data_filter.date_type == 'by_date'">
+					<label for="tanggal_mulai" class="mr-2">Tanggal Mulai :</label>
+					<input type="date" class="form-control form-control-sm" id="tanggal_mulai" value="" ng-model="data_filter.tanggal_mulai">
+				  </div>
+				  <div class="form-group mr-sm-3 mb-2" ng-if="data_filter.date_type == 'by_date'">
+					<label for="tanggal_akhir" class="mr-2">Tanggal Akhir :</label>
+					<input type="date" class="form-control form-control-sm" id="tanggal_akhir" value="" ng-model="data_filter.tanggal_akhir">
+				  </div>
+				  <button type="button" class="btn btn-sm btn-primary shadow-sm mr-sm-3 mb-2" ng-click="loadFilterData();"><i class="fa fa-filter"></i> Filter</button>
+				  <button type="button" class="btn btn-sm btn-primary shadow-sm mb-2" ng-click="loadDataReportAnalysist();"><i class="fa fa-eye"></i> Show All</button>
+				</form>
+			</div>
+		  </div>
+		  <div class="row">
+			<div class="col">
+				<div class="card text-center">
+				  <div class="card-header">
+					Best Seller
+				  </div>
+				  <div class="card-body">
+					<h5 class="card-title">{{quick_report.best_seller['0']['nama_lengkap']}}</h5>
+					<p class="card-text mt-2" ng-if="quick_report.best_seller != 0"><a href="javascript:void(0);" ng-click="openModalViewAll('best_seller');">View All</a></p>
+				  </div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card text-center">
+				  <div class="card-header">
+					Best Customer
+				  </div>
+				  <div class="card-body">
+					<h5 class="card-title">{{quick_report.best_customer['0']['nama_pemesan']}}</h5>
+					<p class="card-text mt-2" ng-if="quick_report.best_customer != 0"><a href="javascript:void(0);" ng-click="openModalViewAll('best_customer');">View All</a></p>
+				  </div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card text-center">
+				  <div class="card-header">
+					Best Location
+				  </div>
+				  <div class="card-body">
+					<h5 class="card-title">{{quick_report.best_location['0']['wilayah']}}</h5>
+					<p class="card-text mt-2" ng-if="quick_report.best_location != 0"><a href="javascript:void(0);" ng-click="openModalViewAll('best_location');">View All</a></p>
+				  </div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card text-center">
+				  <div class="card-header">
+					Best Product
+				  </div>
+				  <div class="card-body">
+					<h5 class="card-title">{{quick_report.best_product['0']['nama_produk']}}</h5>
+					<p class="card-text mt-2" ng-if="quick_report.best_product != 0"><a href="javascript:void(0);" ng-click="openModalViewAll('best_product');">View All</a></p>
+				  </div>
+				</div>
+			</div>
+		  </div>
+		  <div class="row">
+			<div class="col">
+				&nbsp;
+			</div>
+		  </div>
+		  <div class="row">
+			<div class="col">
+				<div class="card text-center">
+				  <div class="card-header">
+					Grafik Penjualan
+				  </div>
+				  <div class="card-body">
+					  <div class="chart-area">
+						<canvas id="myChartPenjualan"></canvas>
+					  </div>
+					  <hr>
+					  &nbsp;
+				  </div>
+				</div>
+			</div>
+		  </div>
+		  <br/>
+
+
+        
+        </div>
+        <!-- /.container-fluid -->
+		
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+      </div>
+      <!-- End of Main Content -->
+	  <div ng-include="'./view/c-footer-sticky.html?nran=200'"></div>
+    </div>
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
+<div ng-include="'./view/c-additional.html?nran=200'"></div>
+
+<!-- Modal -->
+<div class="modal" id="ModalViewAll" tabindex="-1" role="dialog" aria-labelledby="ModalAnalysistLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+	<form>
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalAnalysistLabel">View All {{modal_view_all_title}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		  <div class="row">
+			  <div class="col">
+				  <div class="table-responsive">
+
+					<table ng-if="modal_tipe_data == 'best_seller'" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+					  <thead>
+						<tr>
+						  <th>#</th>
+						  <th>Nama Lengkap</th>
+						  <th>Count</th>
+						</tr>
+					  </thead>
+					  <tbody>
+						<tr ng-repeat="x in data_modal_analysist_view_all">
+						  <td>{{ $index + 1 }}</td>
+						  <td>{{x.nama_lengkap}}</td>
+						  <td>{{x.count}}</td>
+						</tr>
+					  </tbody>
+					</table>
+					
+					<table ng-if="modal_tipe_data == 'best_customer'" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+					  <thead>
+						<tr>
+						  <th>#</th>
+						  <th>Nama Pemesan</th>
+						  <th>Count</th>
+						</tr>
+					  </thead>
+					  <tbody>
+						<tr ng-repeat="x in data_modal_analysist_view_all">
+						  <td>{{ $index + 1 }}</td>
+						  <td>{{x.nama_pemesan}}</td>
+						  <td>{{x.count}}</td>
+						</tr>
+					  </tbody>
+					</table>
+					
+					<table ng-if="modal_tipe_data == 'best_location'" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+					  <thead>
+						<tr>
+						  <th>#</th>
+						  <th>Wilayah</th>
+						  <th>Count</th>
+						</tr>
+					  </thead>
+					  <tbody>
+						<tr ng-repeat="x in data_modal_analysist_view_all">
+						  <td>{{ $index + 1 }}</td>
+						  <td>{{x.wilayah}}</td>
+						  <td>{{x.count}}</td>
+						</tr>
+					  </tbody>
+					</table>
+					
+					<table ng-if="modal_tipe_data == 'best_product'" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+					  <thead>
+						<tr>
+						  <th>#</th>
+						  <th>Nama Produk</th>
+						  <th>Count</th>
+						</tr>
+					  </thead>
+					  <tbody>
+						<tr ng-repeat="x in data_modal_analysist_view_all">
+						  <td>{{ $index + 1 }}</td>
+						  <td>{{x.nama_produk}}</td>
+						  <td>{{x.count}}</td>
+						</tr>
+					  </tbody>
+					</table>
+					
+				  </div>
+			  </div>
+		  </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+	</form>
+    </div>
+  </div>
+</div>

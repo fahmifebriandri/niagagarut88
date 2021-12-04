@@ -1,0 +1,195 @@
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	<div style="background-color: #254dc0;" ng-include="'./view/c-sidebar.html?nran=200'"></div>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+		<div ng-include="'./view/c-topbar.html?nran=200'"></div>
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+        
+        <div class="container-fluid">
+			<nav aria-label="breadcrumb">
+			  <ol class="breadcrumb" ng-bind-html="breadcrumb">
+			  </ol>
+			</nav>
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Setting</h1>
+          </div>
+		  <form ng-submit="updateProfileToko();">
+		  <div class="row">
+			
+				<div class="col-8">
+				  <div class="card shadow mb-4">
+					<div class="card-header py-3">
+					  <h6 class="m-0 font-weight-bold text-primary">Profile Toko</h6>
+					</div>
+					<div class="card-body">
+						  <div class="form-group">
+							<img class="rounded d-block img-fluid display_logo" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22200%22%20height%3D%22200%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20200%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_16ba5f6da00%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A10pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_16ba5f6da00%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2274.421875%22%20y%3D%22104.5%22%3E200x200%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+						  </div>
+						  <div class="form-group">
+							<label for="LogoToko">Logo Toko</label>
+							<input type="file" id="LogoToko"  onchange="angular.element(this).scope().getFileLogo(this)">
+							<small id="textHelp" class="form-text text-warning">Kosongkan kolom ini jika tidak akan mengganti logo.</small>
+						  </div>
+						  <div class="form-group">
+							<label for="NamaToko">Nama Toko</label>
+							<input type="text" class="form-control" id="NamaToko" placeholder="Input nama toko" ng-model="data_profile.nama" required="required">
+						  </div>
+						  <div class="form-group">
+							<label for="NoTelepon">No Telepon</label>
+							<input type="text" class="form-control" id="NoTelepon" placeholder="Input no telepon" ng-model="data_profile.telepon" required="required">
+						  </div>
+						  <div class="form-group">
+							<label for="id_propinsi">Propinsi</label>
+							<select class="form-control" id="id_propinsi" placeholder="Input propinsi" ng-model="data_profile.id_propinsi" required="required" ng-change="loadDataKabupaten(data_profile.id_propinsi);" ng-disabled="objLength(data_propinsi) == 0">
+								<option value="">-Pilih-</option>
+								<option ng-repeat="x in data_propinsi" value="{{x.provinsi}}">{{x.provinsi}}</option>
+							</select>
+						  </div>
+						  <div class="form-group">
+							<label for="id_kabupaten">Kota/Kab</label>
+							<select class="form-control" id="id_kabupaten" placeholder="Input kota" ng-model="data_profile.id_kabupaten" required="required" ng-change="loadDataKecamatan(data_profile.id_propinsi,data_profile.id_kabupaten);" ng-disabled="objLength(data_kabupaten) == 0">
+								<option value="">-Pilih-</option>
+								<option ng-repeat="x in data_kabupaten" value="{{x.kota_kab}}">{{x.kota_kab}}</option>
+							</select>
+						  </div>
+						  <div class="form-group">
+							<label for="id_kecamatan">Kecamatan</label>
+							<select class="form-control" id="id_kecamatan" placeholder="Input kecamatan" ng-model="data_profile.id_kecamatan" required="required" ng-change="loadDataKelurahan(data_profile.id_propinsi,data_profile.id_kabupaten,data_profile.id_kecamatan);" ng-disabled="objLength(data_kecamatan) == 0">
+								<option value="">-Pilih-</option>
+								<option ng-repeat="x in data_kecamatan" value="{{x.kecamatan}}">{{x.kecamatan}}</option>
+							</select>
+						  </div>
+						  <div class="form-group">
+							<label for="id_kelurahan">Kelurahan/Desa</label>
+							<select class="form-control" id="id_kelurahan" placeholder="Input kelurahan" ng-model="data_profile.id_kelurahan" required="required" ng-change="loadDataKodePOS(data_profile.id_propinsi,data_profile.id_kabupaten,data_profile.id_kecamatan,data_profile.id_kelurahan);" ng-disabled="objLength(data_kelurahan) == 0">
+								<option value="">-Pilih-</option>
+								<option ng-repeat="x in data_kelurahan" value="{{x.kelurahan}}">{{x.kelurahan}}</option>
+							</select>
+						  </div>
+						  <div class="form-group">
+							<label for="kode_pos">Kode POS</label>
+							<input type="text" class="form-control" id="kode_pos" placeholder="Input kode POS" ng-model="data_profile.kode_pos" required="required">
+						  </div>
+						  <div class="form-group">
+							<label for="AlamatToko">Alamat Toko</label>
+							<textarea class="form-control" id="AlamatToko" placeholder="Input alamat toko" ng-model="data_profile.alamat" required="required"></textarea>
+						  </div>
+						  <div class="form-group">
+							<label for="Deskripsi">Deskripsi</label>
+							<textarea class="form-control" id="Deskripsi" placeholder="Input deskripsi toko" ng-model="data_profile.deskripsi" ></textarea>
+						  </div>
+								<div class="row py-3">
+									<div class="col">
+										<hr />
+									</div>
+								</div>
+								<div class="row pb-4">
+									<div class="col">
+										<button class="btn btn-sm btn-primary w-100" type="button" ng-click="getCurrentPosition()" ><i class="fa fa-map-marker" aria-hidden="true"></i> Lokasi Toko Saya</button>
+									</div>
+								</div>
+								<div class="row pb-4">
+									<div class="col">
+										<div id="divMap" style="width:100%;height:400px;background-color:aqua;"></div>
+									</div>
+								</div>
+						  
+						  
+						  
+						  
+						  <button type="submit" class="btn btn-primary">Submit</button>
+					</div>
+				  </div>
+				</div>
+				<div class="col-4">
+				  <div class="card shadow mb-4">
+					<div class="card-header py-3">
+					  <h6 class="m-0 font-weight-bold text-primary">Additional</h6>
+					</div>
+					<div class="card-body">
+						  <div class="form-group row">
+							<label for="MaxJarak" class="col-sm-5 col-form-label">Max Jarak</label>
+							<div class="input-group col-sm-7">
+								<input type="number" class="form-control" id="MaxJarak" placeholder="Input max jarak" value="0" ng-model="data_profile.max_jarak" required="required">
+								  <div class="input-group-append">
+									<span class="input-group-text">KM</span>
+								  </div>
+							</div>
+						  </div>
+						  <div class="form-group row">
+							<label for="MinStok" class="col-sm-5 col-form-label">Min Stok</label>
+							<div class="input-group col-sm-7">
+								<input type="number" class="form-control" id="MinStok" placeholder="Input min stok" value="0" ng-model="data_profile.min_stok" required="required">
+								  <div class="input-group-append">
+									<span class="input-group-text">Pcs</span>
+								  </div>
+							</div>
+						  </div>
+						  <div class="form-group row">
+							<label for="PrintBorder" class="col-sm-5 col-form-label">Print Border</label>
+							<div class="input-group col-sm-7">
+								<select class="form-control" id="PrintBorder" ng-model="data_profile.print_border" required="required">
+									<option value="0">Tidak</option>
+									<option value="1">Ya</option>
+								</select>
+							</div>
+						  </div>
+						  <div class="form-group row">
+							<label for="WidthPrintPage" class="col-sm-5 col-form-label">Width Print</label>
+							<div class="input-group col-sm-7">
+								<input type="number" class="form-control" id="WidthPrintPage" placeholder="Input width print page" value="0" ng-model="data_profile.width_print_page" required="required">
+								  <div class="input-group-append">
+									<span class="input-group-text">px</span>
+								  </div>
+								  <small id="textHelp" class="form-text text-warning">300px akan di inputkan otomatis jika diisi 0px.</small>
+							</div>
+						  </div>
+						  <div class="form-group row">
+							<label for="PrintMarginLeft" class="col-sm-5 col-form-label">Print Margin Left</label>
+							<div class="input-group col-sm-7">
+								<input type="number" class="form-control" id="PrintMarginLeft" placeholder="Input print margin left" value="0" ng-model="data_profile.print_margin_left" required="required">
+								  <div class="input-group-append">
+									<span class="input-group-text">px</span>
+								  </div>
+							</div>
+						  </div>
+						  <div class="form-group row">
+							<label for="PrintFontSize" class="col-sm-5 col-form-label">Print Font Size</label>
+							<div class="input-group col-sm-7">
+								<input type="number" class="form-control" id="PrintFontSize" placeholder="Input print font size" value="0" ng-model="data_profile.print_font_size" required="required">
+								  <div class="input-group-append">
+									<span class="input-group-text">px</span>
+								  </div>
+							</div>
+						  </div>
+					</div>
+				  </div>
+				</div>
+			
+		  </div>
+</form>
+
+
+        
+        </div>
+        <!-- /.container-fluid -->
+		
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+      </div>
+      <!-- End of Main Content -->
+	  <div ng-include="'./view/c-footer-sticky.html?nran=200'"></div>
+    </div>
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
+<div ng-include="'./view/c-additional.html?nran=200'"></div>
+
+<!-- Modal -->

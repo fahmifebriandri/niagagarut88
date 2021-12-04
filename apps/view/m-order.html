@@ -1,0 +1,339 @@
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	<div style="background-color: #254dc0;" ng-include="'./view/c-sidebar.html?nran=200'"></div>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+		<div ng-include="'./view/c-topbar.html?nran=200'"></div>
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+        
+        <div class="container-fluid">
+			<nav aria-label="breadcrumb">
+			  <ol class="breadcrumb" ng-bind-html="breadcrumb">
+			  </ol>
+			</nav>
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Transaction Order</h1>
+            <a href="javascript:void(0);" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" ng-click="loadViewNg('/order/form');"><i class="fas fa-plus fa-sm text-white-50"></i> Tambah</a>
+			<!--  ng-click="addOrder();" -->
+          </div>
+		  <div class="row">
+			<div class="col-4">
+				<h1 class="text-primary">{{quick_report_order.belum_bayar}}</h1>
+				<p class="text-dark">Belum Bayar</p>
+			</div>
+			<div class="col-4">
+				<h1 class="text-primary">{{quick_report_order.belum_diproses}}</h1>
+				<p class="text-dark">Belum Diproses</p>
+			</div>
+			<div class="col-4">
+				<h1 class="text-primary">{{quick_report_order.sedang_diproses}}</h1>
+				<p class="text-dark">Sedang Diproses</p>
+			</div>
+			<div class="col-4">
+				<h1 class="text-primary">{{quick_report_order.belum_ada_resi}}</h1>
+				<p class="text-dark">Belum Ada Resi</p>
+			</div>
+			<div class="col-4">
+				<h1 class="text-primary">{{quick_report_order.proses_pengiriman}}</h1>
+				<p class="text-dark">Proses Pengiriman</p>
+			</div>
+			<div class="col-4">
+				<h1 class="text-primary">{{quick_report_order.pengiriman_berhasil}}</h1>
+				<p class="text-dark">Pengiriman Berhasil</p>
+			</div>
+		  </div>
+		  <br/><br/>
+		  <div class="row">
+			<div class="col-3">
+				<button type="button" class="btn btn-sm btn-dark shadow-sm" ng-click="printAllOrder();"><i class="fa fa-print"></i> Print All</button>
+			</div>
+			<div class="col-9">
+				<form class="form-inline float-right">
+				  <div class="form-group mr-sm-3 mb-2">
+					<select class="form-control form-control-sm" ng-model="data_filter.date_type">
+						<option value="by_date">By Date</option>
+						<option value="by_month">By Month</option>
+					</select>
+				  </div>
+				  <div class="form-group mr-sm-3 mb-2" ng-if="data_filter.date_type == 'by_month'">
+					<select class="form-control form-control-sm" ng-model="data_filter.bulan">
+						<option value="1">January</option>
+						<option value="2">February</option>
+						<option value="3">Maret</option>
+						<option value="4">April</option>
+						<option value="5">Mei</option>
+						<option value="6">Juni</option>
+						<option value="7">Juli</option>
+						<option value="8">Agustus</option>
+						<option value="9">September</option>
+						<option value="10">Oktober</option>
+						<option value="11">November</option>
+						<option value="12">Desember</option>
+					</select>
+				  </div>
+				  <div class="form-group mr-sm-3 mb-2" ng-if="data_filter.date_type == 'by_month'">
+					<select class="form-control form-control-sm" ng-model="data_filter.tahun">
+						<option value="2018">2018</option>
+						<option value="2019">2019</option>
+						<option value="2020">2020</option>
+						<option value="2021">2021</option>
+					</select>
+				  </div>
+				  <div class="form-group mr-sm-3 mb-2" ng-if="data_filter.date_type == 'by_date'">
+					<label for="tanggal_mulai" class="mr-2">Tanggal Mulai :</label>
+					<input type="date" class="form-control form-control-sm" id="tanggal_mulai" value="" ng-model="data_filter.tanggal_mulai">
+				  </div>
+				  <div class="form-group mr-sm-3 mb-2" ng-if="data_filter.date_type == 'by_date'">
+					<label for="tanggal_akhir" class="mr-2">Tanggal Akhir :</label>
+					<input type="date" class="form-control form-control-sm" id="tanggal_akhir" value="" ng-model="data_filter.tanggal_akhir">
+				  </div>
+				  <button type="button" class="btn btn-sm btn-primary shadow-sm mr-sm-3 mb-2" ng-click="loadFilterData();"><i class="fa fa-filter"></i> Filter</button>
+				  <button type="button" class="btn btn-sm btn-primary shadow-sm mb-2" ng-click="loadDataOrder();"><i class="fa fa-eye"></i> Show All</button>
+				</form>
+			</div>
+		  </div>
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">List Order</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th><input type="checkbox" ng-init="data_order_checked_all = false;" ng-model="data_order_checked_all" ng-click="orderCheckedAll()"/>#</th>
+					  <th>Tanggal</th>
+					  <th>Dropship</th>
+					  <th>Sumber</th>
+                      <th>Pembeli (Nama/Alamat)</th>
+					  <th>Dropship (Nama/Alamat)</th>
+					  <th>Daftar Nama Barang</th>
+                      <th>Total Qty</th>
+					  <th>Total Belanja</th>
+					  <th>Diskon Member</th>
+					  <th>Diskon Order</th>
+					  <th>Total Ongkir</th>
+					  <th>Total Tagihan</th>
+					  <th>Dibayar</th>
+					  <th>Kembalian</th>
+					  <th style="min-width:110px;">Status Order</th>
+					  <th style="min-width:90px;">Status Bayar</th>
+					  <th style="min-width:90px;">No Resi</th>
+                      <th style="min-width:170px;">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="x in data_table_order">
+                      <td>
+						<input type="checkbox" ng-init="data_order_checked[x.id] = false;" ng-model="data_order_checked[x.id]" />
+						{{ $index + 1 }}
+					  </td>
+					  <td>{{x.tanggal_order}}</td>
+					  <td>{{aktifLabel(x.status_dropship)}}</td>
+					  <td>{{ucWord(x.insert_by)}}<br />{{(x.insert_by == 'mobile')?'#'+kodeOrder(x.id):''}}</td>
+                      <td>{{x.nama_pemesan}}<br />{{x.alamat_tujuan}}</td>
+					  <td>{{x.nama_pemesan_dropship}}<br />{{x.alamat_tujuan_dropship}}</td>
+					  <td style="white-space: pre">{{x.list_nama_barang}}</td>
+					  <td>{{x.total_qty}}</td>
+                      <td>{{formatRupiah(x.total_belanja)}}</td>
+					  <td>{{formatRupiah(x.diskon_member)}}</td>
+					  <td>{{formatRupiah(x.diskon_order)}}</td>
+					  <td>{{formatRupiah(x.total_ongkir)}}</td>
+					  <td>{{formatRupiah(x.total_bayar)}}</td>
+					  <td>{{formatRupiah((x.transaksi_dibayar))}}</td>
+					  <td>{{formatRupiah((x.transaksi_kembalian))}}</td>
+                      <td>{{x.status_order}}</td>
+					  <td>
+						<button type="button" class="btn btn-sm btn-block shadow-sm text-capitalize" ng-class="(x.status_bayar == 'sudah')?' btn-success ':' btn-danger '" ng-click="updateStatusBayar(x);"><i class="fa fa-money" aria-hidden="true"></i> {{x.status_bayar}}</button>
+					  </td>
+					  <td>
+						<button type="button" class="btn btn-sm btn-block btn-warning shadow-sm" ng-click="updateResi(x);" ng-disabled="x.status_bayar == 'belum'"><i class="fas fa-edit fa-sm text-white-50"></i> Update</button>
+						{{x.no_resi}}
+					  </td>
+					  <td class="text-center">
+						<button type="button" class="btn btn-sm btn-dark shadow-sm" ng-disabled="x.status_bayar == 'belum'" ng-click="printOrder(x.id);"><i class="fas fa-print fa-sm text-white-50"></i> Print</button>
+						
+						<button ng-if="x.insert_by == 'adminweb'" type="button" class="btn btn-sm btn-warning shadow-sm" ng-click="loadViewNg('/order/form',{action:'updateOrder',id_order:x.id});"><i class="fas fa-edit fa-sm text-white-50"></i> Update</button>
+						<button ng-if="x.insert_by != 'adminweb'" type="button" class="btn btn-sm btn-success shadow-sm" ng-click="viewMobileOrder({id_order:x.id})"><i class="fas fa-eye fa-sm text-white-50"></i> View</button>
+						<button type="button" class="btn btn-sm btn-danger shadow-sm" ng-click="deleteOrder(x.id);" ng-disabled="(x.status_order == 'Preparation In Progress')?false:true" ><i class="fas fa-trash fa-sm text-white-50"></i></button>
+					  </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        
+        </div>
+        <!-- /.container-fluid -->
+
+
+<div class="modal modal-grosir" id="modalUpdateResi" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Resi {{modalUpdateResi.nama_pemesan}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+			<div class="row">
+				<div class="col">
+				  <input type="text" class="form-control text-center" id="dibayar" ng-model="modalUpdateResi.no_resi" >
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+				  &nbsp;
+				</div>
+			</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary mx-auto shadow-sm" data-dismiss="modal">Cancel</button>
+		<button type="button" class="btn btn-primary mx-auto shadow-sm" ng-click="updateResiSave();">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal modal-view-mobile-order" id="modalViewMobileOrder" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+	<form ng-submit="updateMobileOrder()">
+      <div class="modal-header">
+        <h5 class="modal-title">View Mobile Order {{vmo_kode_order}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		<div class="d-flex flex-column mb-2">
+			<div class="m-1 border border-secondary" ng-repeat="x in data_mobile_order.tb_order_cart">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-5 align-self-center p-0">
+							<img ng-src="{{x.foto}}" class="mx-auto img-fluid" alt="...">
+						</div>	
+						<div class="col-7 p-0">
+							<div class="px-2 color-primer font-weight-bold">{{x.nama_barang}} {{(x.nama_varian != '')?'('+x.nama_varian+')':''}}</div>
+							<div class="px-2 color-primer">{{formatRupiah(x.cart_harga_jual_real)}}</div>
+							<div class="px-2"><span ng-if="x.diskon != '0'" style="font-size:13px;color:red;text-decoration:line-through;font-weight:bold;">({{formatRupiah(x.cart_harga_jual)}})</span>&nbsp;</div>
+							<div class="p-2 color-primer d-flex flex-row justify-content-between">
+								<div>({{x.cart_qty}}) Item</div>
+								<div>{{(x.cart_berat/1000)}} Kg</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="px-1">
+			<div class="row">
+				<div class="col">
+					<table class="w-100 font-weight-bold">
+						<tr class="text-right">
+							<td>Total Belanja</td>
+							<td>{{formatRupiah(total_belanja)}}</td>
+						</tr>
+						<tr class="text-right" ng-if="nama_membership !== null">
+							<td>Diskon Membership {{nama_membership}}</td>
+							<td>{{label_nilai_diskon_membership}}</td>
+						</tr>
+						<tr class="text-right">
+							<td>Total Item</td>
+							<td>{{total_item}}</td>
+						</tr>
+						<tr class="text-right">
+							<td>Total Berat</td>
+							<td>{{(total_berat/1000)}} kg</td>
+						</tr>
+						<tr class="text-right">
+							<td>Harus dibayar</td>
+							<td>{{formatRupiah(harus_dibayar)}}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<hr />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="form-group color-primer">
+						<label for="">Status Order</label>
+						<select class="form-control mb-3" ng-model="data_mobile_order.tb_order.status_order" required="required">
+							<option value="">Pilih</option>
+							<option value="Preparation In Progress">Preparation In Progress</option>
+							<option value="On Process">On Process</option>
+							<option value="Shipping">Shipping</option>
+							<option value="Delivered">Delivered</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="form-group color-primer">
+						<label for="">Ekpedisi</label>
+						<input type="text" class="form-control" ng-model="data_mobile_order.tb_order_suplier.expedisi_service" readonly="readonly">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="form-group color-primer">
+						<label for="">Ongkir</label>
+						<input type="number" class="form-control" ng-model="data_mobile_order.tb_order_suplier.biaya_kirim" required="required">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<hr />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<button type="submit"class="btn btn-primary w-100">Update</button>
+				</div>
+			</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+		<button style="width: 150px;" type="button" class="btn btn-danger mx-auto shadow-sm"  ng-click="deleteOrder(vmo_id_order);" ng-disabled="(data_mobile_order.tb_order.status_order == 'Preparation In Progress')?false:true">Cancel Order</button>
+        <button style="width: 150px;" type="button" class="btn btn-secondary mx-auto shadow-sm" data-dismiss="modal">Close</button>
+      </div>
+	</form>
+    </div>
+  </div>
+</div>
+
+
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+      </div>
+      <!-- End of Main Content -->
+	  <div ng-include="'./view/c-footer-sticky.html?nran=200'"></div>
+    </div>
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
+<div ng-include="'./view/c-additional.html?nran=200'"></div>
+
+<!-- Modal -->
+<script>
+$(document).ready(function(){
+	
+});
+</script>

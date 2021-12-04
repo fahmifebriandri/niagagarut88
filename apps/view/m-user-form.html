@@ -1,0 +1,181 @@
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	<div style="background-color: #254dc0;" ng-include="'./view/c-sidebar.html?nran=200'"></div>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+		<div ng-include="'./view/c-topbar.html?nran=200'"></div>
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+        
+        <div class="container-fluid">
+			<nav aria-label="breadcrumb">
+			  <ol class="breadcrumb" ng-bind-html="breadcrumb">
+			  </ol>
+			</nav>
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800" ng-bind-html="titlePage">Tambah User</h1>
+          </div>
+		  
+		  <div class="row">
+			<div class="col-8">
+			  <div class="card shadow mb-4">
+				<div class="card-header py-3">
+				  <h6 class="m-0 font-weight-bold text-primary">Form User</h6>
+				</div>
+				<div class="card-body">
+					<form ng-submit="submit_form_user()" ng-init="data_user.aktif = '1';">
+					  <input type="hidden" ng-model="data_user.action">
+					  <div class="form-group">
+						<label for="Email">Email</label>
+						<input type="email" class="form-control" required="required" placeholder="Input email" ng-model="data_user.email">
+					  </div>
+					  <div class="form-group">
+						<label for="Password">Password</label>
+						<input type="password" class="form-control" placeholder="Input password" ng-model="data_user.password" ng-required="!data_user.password_unrequired">
+						<small id="emailHelp" class="form-text text-warning" ng-show="data_user.password_unrequired == true">Kosongkan kolom ini jika tidak akan mengganti nilainya.</small>
+					  </div>
+					  <div class="form-group">
+						<label for="NamaLengkap">Nama Lengkap</label>
+						<input type="text" class="form-control" required="required" placeholder="Input nama lengkap" ng-model="data_user.nama_lengkap">
+					  </div>
+					  <div class="form-group">
+						<label for="Telepon">Telepon</label>
+						<input type="text" class="form-control" required="required" placeholder="Input telepon" ng-model="data_user.telepon">
+					  </div>
+					  <div class="form-group">
+						<label for="UserGroup">User Group</label>
+						<select class="form-control" id="UserGroup" required="required" ng-model="data_user.id_user_group">
+						  <option value="">- Pilih -</option>
+						  <option ng-repeat="x in dataUserGroup" ng-value="x.id">{{x.name}}</option>
+						</select>
+					  </div>
+					  <div class="form-group">
+						<label for="Aktif">Aktif</label>
+						<select class="form-control" required="required" ng-model="data_user.aktif">
+						  <option value="">- Pilih -</option>
+						  <option value="1">Ya</option>
+						  <option value="0">Tidak</option>
+						</select>
+					  </div>
+					  <button type="submit" class="btn btn-primary">Submit</button>
+					</form>
+				</div>
+			  </div>
+			</div>
+			<div class="col-4">
+			  <div class="card shadow mb-4">
+				<div class="card-header py-3">
+				  <h6 class="m-0 font-weight-bold text-primary">User Group</h6>
+				</div>
+				<div class="card-body">
+					<div class="input-group">
+					  <input type="text" class="form-control group-access-nama" placeholder="Input nama group" aria-label="Input nama group" ng-model="group_access.nama">
+					  <div class="input-group-append">
+						<button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#ModalUserGroup" ng-click="loadAppMenu(); group_access.action='addUserGroup'; group_access.checked = {};"><i class="fa fa-plus"></i></button>
+					  </div>
+					</div>
+					<hr />
+					<ul class="list-group">
+					  <li class="list-group-item d-flex justify-content-between align-items-center" ng-repeat="x in dataUserGroup">
+						{{x.name}}
+						<span>
+							<button class="btn btn-sm btn-warning" ng-click="update_user_group(x);"><i class="fa fa-edit"></i></button>
+							<button class="btn btn-sm btn-danger" ng-click="delete_user_group(x.id);"><i class="fa fa-trash"></i></button>
+						</span>
+					  </li>
+					</ul>
+				</div>
+			  </div>
+
+			</div>
+		  </div>
+
+
+
+        
+        </div>
+        <!-- /.container-fluid -->
+		
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+      </div>
+      <!-- End of Main Content -->
+	  <div ng-include="'./view/c-footer-sticky.html?nran=200'"></div>
+    </div>
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
+<div ng-include="'./view/c-additional.html?nran=200'"></div>
+
+<!-- Modal -->
+<div class="modal" id="ModalUserGroup" tabindex="-1" role="dialog" aria-labelledby="ModalUserGroupLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+	<form ng-submit="submit_form_user_group()">
+      <input type="hidden" ng-model="group_access.action">
+	  <div class="modal-header">
+        <h5 class="modal-title" id="ModalUserGroupLabel">Form User Group</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		  <div class="form-group">
+			<label for="namaUserGroup">Nama Group</label>
+			<input type="text" class="form-control" required="required" id="namaUserGroup" placeholder="Input nama group" ng-model="group_access.nama">
+		  </div>
+		  <hr/>
+		  <label>Group Akses</label>
+			<ul class="px-0">
+			  <div ng-repeat="x in dataAppMenu | filter :{parent:'0', name:'!Affiliasi'} | filter :{parent:'0', name:'!Support'}" ng-init="group_access.checked['12'] = true;">
+				  <li class="d-flex justify-content-between align-items-center">
+					{{x.name}}
+					<span>
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" ng-model="group_access.checked[x.id]" ng-disabled="x.id == 12">
+						  <label class="form-check-label" for="inlineCheckbox1">Access</label>
+						</div>
+					</span>
+				  </li>
+				  <li class="d-flex justify-content-between align-items-center pl-3" ng-show="x.have_child == 1" ng-repeat="xi in dataAppMenu | filter :{parent:x.id}">
+					{{xi.name}}
+					<span>
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" ng-model="group_access.checked[xi.id]">
+						  <label class="form-check-label" for="inlineCheckbox1">Access</label>
+						</div>
+					</span>
+				  </li>
+			  </div>
+			</ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+	</form>
+    </div>
+  </div>
+</div>
+<script>
+/*
+$('#ModalUserGroup').on('hidden.bs.modal', function (e) {
+    var scope = angular.element($(this)).scope();
+    scope.$apply(function(){
+        scope.group_access = {};
+    });
+})
+*/
+$(document).ready(function(){
+	$(".group-access-nama").keyup(function(event){
+		if(event.keyCode == 13){
+			$(this).parents(".input-group").find("button").trigger("click");
+		}
+	});
+});
+</script>

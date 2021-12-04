@@ -1,0 +1,194 @@
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	<div style="background-color: #254dc0;" ng-include="'./view/c-sidebar.html?nran=200'"></div>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+		<div ng-include="'./view/c-topbar.html?nran=200'"></div>
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+        
+        <div class="container-fluid">
+			<nav aria-label="breadcrumb">
+			  <ol class="breadcrumb" ng-bind-html="breadcrumb">
+			  </ol>
+			</nav>
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Laporan Report Generate</h1>
+          </div>
+		  <div class="row">
+			<div class="col-12">
+				<form class="form-inline float-right">
+				  <div class="form-group mr-sm-3 mb-2">
+					<select class="form-control form-control-sm" ng-model="data_filter.date_type">
+						<option value="by_date">By Date</option>
+						<option value="by_month">By Month</option>
+					</select>
+				  </div>
+				  <div class="form-group mr-sm-3 mb-2" ng-if="data_filter.date_type == 'by_month'">
+					<select class="form-control form-control-sm" ng-model="data_filter.bulan">
+						<option value="1">January</option>
+						<option value="2">February</option>
+						<option value="3">Maret</option>
+						<option value="4">April</option>
+						<option value="5">Mei</option>
+						<option value="6">Juni</option>
+						<option value="7">Juli</option>
+						<option value="8">Agustus</option>
+						<option value="9">September</option>
+						<option value="10">Oktober</option>
+						<option value="11">November</option>
+						<option value="12">Desember</option>
+					</select>
+				  </div>
+				  <div class="form-group mr-sm-3 mb-2" ng-if="data_filter.date_type == 'by_month'">
+					<select class="form-control form-control-sm" ng-model="data_filter.tahun">
+						<option value="2018">2018</option>
+						<option value="2019">2019</option>
+						<option value="2020">2020</option>
+						<option value="2021">2021</option>
+					</select>
+				  </div>
+				  <div class="form-group mr-sm-3 mb-2" ng-if="data_filter.date_type == 'by_date'">
+					<label for="tanggal_mulai" class="mr-2">Tanggal Mulai :</label>
+					<input type="date" class="form-control form-control-sm" id="tanggal_mulai" value="" ng-model="data_filter.tanggal_mulai">
+				  </div>
+				  <div class="form-group mr-sm-3 mb-2" ng-if="data_filter.date_type == 'by_date'">
+					<label for="tanggal_akhir" class="mr-2">Tanggal Akhir :</label>
+					<input type="date" class="form-control form-control-sm" id="tanggal_akhir" value="" ng-model="data_filter.tanggal_akhir">
+				  </div>
+				  <button type="button" class="btn btn-sm btn-primary shadow-sm mr-sm-3 mb-2" ng-click="loadFilterData();"><i class="fa fa-filter"></i> Filter</button>
+				  <button type="button" class="btn btn-sm btn-primary shadow-sm mb-2" ng-click="loadAllData();"><i class="fa fa-eye"></i> Show All</button>
+				</form>
+			</div>
+		  </div>
+		  <div class="row">
+			<div class="col">
+				&nbsp;
+			</div>
+		  </div>
+		  <div class="row">
+			<div class="col">
+				<div class="card">
+				  <div class="card-header">
+					<h6 class="m-0 font-weight-bold text-primary">List Report</h6>
+				  </div>
+				  <div class="card-body">
+					  <div class="table-responsive">
+						<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+						  <thead>
+							<tr>
+							  <th>#</th>
+							  <th>Tanggal Order</th>
+							  <th>Nama Pemesan</th>
+							  <th>Alamat Tujuan</th>
+							  <th>No Resi</th>
+							  <th>Status Bayar</th>
+							  <th>Status Order</th>
+							  <th>Total Qty</th>
+							  <th>Total Belanja</th>
+							  <th>Total Ongkir</th>
+							  <th>Diskon Order</th>
+							  <th>Diskon Member</th>
+							  <th>Total Bayar</th>
+							  <th>Total Harga Jual</th>
+							  <th>Total Harga Beli</th>
+							  <th>Total Keuntungan</th>
+							</tr>
+						  </thead>
+						  <tfoot>
+							<tr>
+							  <th>#</th>
+							  <th>Tanggal Order</th>
+							  <th>Nama Pemesan</th>
+							  <th>Alamat Tujuan</th>
+							  <th>No Resi</th>
+							  <th>Status Bayar</th>
+							  <th>Status Order</th>
+							  <th>Total Qty</th>
+							  <th>Total Belanja</th>
+							  <th>Total Ongkir</th>
+							  <th>Diskon Order</th>
+							  <th>Diskon Member</th>
+							  <th>Total Bayar</th>
+							  <th>Total Harga Jual</th>
+							  <th>Total Harga Beli</th>
+							  <th>Total Keuntungan</th>
+							</tr>
+						  </tfoot>
+						  <tbody>
+							<tr ng-repeat="x in data_report">
+							  <td>{{ $index + 1 }}</td>
+							  <td>{{x.tanggal_order}}</td>
+							  <td>{{x.nama_pemesan}}</td>
+							  <td>{{x.alamat_tujuan}}</td>
+							  <td>{{x.no_resi}}</td>
+							  <td>{{x.status_bayar}}</td>
+							  <td>{{x.status_order}}</td>
+							  <td>{{x.total_qty}}</td>
+							  <td>{{formatRupiah(x.total_belanja)}}</td>
+							  <td>{{formatRupiah(x.total_ongkir)}}</td>
+							  <td>{{formatRupiah(x.diskon_order)}}</td>
+							  <td>{{formatRupiah(x.diskon_member)}}</td>
+							  <td>{{formatRupiah(x.total_bayar)}}</td>
+							  <td>{{formatRupiah(x.total_harga_jual)}}</td>
+							  <td>{{formatRupiah(x.total_harga_beli)}}</td>
+							  <td>{{formatRupiah(x.total_keuntungan)}}</td>
+							</tr>
+						  </tbody>
+<!-- 
+
+tanggal_order
+nama_pemesan
+alamat_tujuan
+no_resi
+status_bayar
+status_order
+total_qty
+
+total_belanja
+total_ongkir
+diskon_order
+diskon_member
+
+total_bayar
+total_harga_jual
+total_harga_beli
+total_keuntungan
+
+
+id
+waktu_order
+waktu_order_val
+aktif
+hapus
+id_user_owner
+created_by
+updated_by
+-->
+						</table>
+					  </div>
+				  </div>
+				</div>
+			</div>
+		  </div>
+
+
+        
+        </div>
+        <!-- /.container-fluid -->
+		
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+      </div>
+      <!-- End of Main Content -->
+	  <div ng-include="'./view/c-footer-sticky.html?nran=200'"></div>
+    </div>
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
+<div ng-include="'./view/c-additional.html?nran=200'"></div>

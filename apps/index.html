@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	  <meta charset="utf-8">
+	  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	  <meta name="description" content="">
+	  <meta name="author" content="">
+	  
+	  <title>Niaga Garut 88</title>
+	  <link rel="shortcut icon" type="image/png" href="../assets/niagagarut88/NG-001.png">
+
+	  <!-- Custom fonts for this template-->
+	  <link href="./assets/sb-admin-2/vendor/fontawesome-free/css/all.min.css?n=190" rel="stylesheet" type="text/css">
+	  <link href="./assets/font-awesome-4.7.0/css/font-awesome.min.css?n=190" rel="stylesheet" type="text/css">
+	  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+	  <!-- Custom styles for this template-->
+	  <link href="./assets/sb-admin-2/css/sb-admin-2.min.css?n=190" rel="stylesheet">
+	  <link href="./assets/sb-admin-2/vendor/datatables/dataTables.bootstrap4.min.css?n=190" rel="stylesheet">
+	  <link href="./assets/sb-admin-2/vendor/datatables/Buttons-1.6.1/css/buttons.dataTables.min.css?n=190" rel="stylesheet">
+
+	  <link href="./default_style.css?n=190" rel="stylesheet" type="text/css">
+	</head>
+	
+	<body class="{{ClassBody}}" id="page-top" ng-app="niagagarut88"  ng-controller="ctrlIndex">
+		<div id="loadingLoadApp" style="background:white;position:fixed;width:100%;height:100%;text-align:center;z-index:10000;">
+			<div style="font-size:25px;display:initial;position:absolute;top:50%;">
+				<i class="fa fa-refresh fa-spin fa-fw"></i> Loading...
+			</div>
+		</div>
+		<ng-view></ng-view>
+		<!-- Jquery-->
+		<script src="./assets/sb-admin-2/vendor/jquery/jquery.min.js?n=190"></script>
+		<!-- Angular JS -->
+		<script src="./assets/angular-1.7.8/angular.min.js?n=190"></script>
+		<script src="./assets/angular-1.7.8/angular-route.min.js?n=190"></script>
+		<script src="./assets/angular-1.7.8/angular-sanitize.min.js?n=190"></script>
+		<!-- Bootstrap -->
+		<script src="./assets/sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min.js?n=190"></script>
+		<!-- Google Map -->
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKZWNryVL_RFWBbDAEmdD3WYwq3RJSEzU&libraries=places"></script>
+		<!-- Core plugin JavaScript-->
+		<script src="./assets/sb-admin-2/vendor/jquery-easing/jquery.easing.min.js?n=190"></script>
+		<!-- Custom scripts for all pages-->
+		<script src="./assets/sb-admin-2/js/sb-admin-2.min.js?n=190"></script>
+		<!-- Liblary -->
+		<script src="./assets/sb-admin-2/vendor/datatables/jquery.dataTables.min.js?n=190"></script>
+		<script src="./assets/sb-admin-2/vendor/datatables/dataTables.bootstrap4.min.js?n=190"></script>
+		<script src="./assets/sb-admin-2/vendor/chart.js/Chart.min.js?n=190"></script>
+        <script src="./map_javascript.js?n=190"></script>
+		<script src="./default_javascript.js?n=190"></script>
+		<script src="./encryption_md5.js?n=190"></script>
+		
+		
+		<script src="./assets/sb-admin-2/vendor/datatables/Buttons-1.6.1/js/dataTables.buttons.min.js?n=190"></script>
+		<script src="./assets/sb-admin-2/vendor/datatables/JSZip-2.5.0/jszip.min.js?n=190"></script>
+		<script src="./assets/sb-admin-2/vendor/datatables/pdfmake-0.1.36/pdfmake.min.js?n=190"></script>
+		<script src="./assets/sb-admin-2/vendor/datatables/pdfmake-0.1.36/vfs_fonts.js?n=190"></script>
+		<script src="./assets/sb-admin-2/vendor/datatables/Buttons-1.6.1/js/buttons.html5.min.js?n=190"></script>
+		<script src="./assets/sb-admin-2/vendor/datatables/Buttons-1.6.1/js/buttons.print.min.js?n=190"></script>
+		
+		
+		<!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+		<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js?n=190"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js?n=190"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-auth.js?n=190"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-database.js?n=190"></script>
+		
+		
+		<script>
+		console.log("load index.html");
+		// Your web app's Firebase configuration
+		var firebaseConfig = {
+			apiKey: "AIzaSyDK9kKEq3BpdDfcQzYiu3OTbRKs4NGMRIg",
+			authDomain: "aflahacashier.firebaseapp.com",
+			databaseURL: "https://aflahacashier.firebaseio.com",
+			projectId: "aflahacashier",
+			storageBucket: "aflahacashier.appspot.com",
+			messagingSenderId: "655837160577",
+			appId: "1:655837160577:web:959ced33538d32b1f79980",
+			measurementId: "G-K91E68QMHY"
+		};
+		// Initialize Firebase
+		firebase.initializeApp(firebaseConfig);
+		firebase.analytics();		  
+		//console.log(firebase);
+		var firebaseDB = firebase.database();
+		function sendPingToUser(id_user = null){
+			//A send Ping to user.
+			var pingData = firebaseDB.ref('/tb_support_chat/' + id_user + '/ping').push().key;
+			var newPing = {};
+			newPing['/tb_support_chat/' + id_user + '/ping'] = pingData;
+			return firebaseDB.ref().update(newPing);
+		}
+		function closeLoadingLoadApp(){
+			$("#loadingLoadApp").css("display","none");
+		}
+		</script>
+		
+		<!-- Angular JS Control App -->
+		<script src="./ng_app.js?n=190"></script>
+
+
+		<!-- Facebook Pixel Code -->
+		<script>
+		!function(f,b,e,v,n,t,s)
+		{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+		n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+		if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+		n.queue=[];t=b.createElement(e);t.async=!0;
+		t.src=v;s=b.getElementsByTagName(e)[0];
+		s.parentNode.insertBefore(t,s)}(window, document,'script',
+		'https://connect.facebook.net/en_US/fbevents.js');
+		fbq('init', '3055164597902211');
+		fbq('track', 'PageView');
+		</script>
+		<noscript><img height="1" width="1" style="display:none"
+		src="https://www.facebook.com/tr?id=3055164597902211&ev=PageView&noscript=1"
+		/></noscript>
+		<!-- End Facebook Pixel Code -->
+	</body>
+</html>

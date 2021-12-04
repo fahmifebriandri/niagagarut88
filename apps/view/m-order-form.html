@@ -1,0 +1,475 @@
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	<div style="background-color: #254dc0;" ng-include="'./view/c-sidebar.html?nran=200'"></div>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+		<div ng-include="'./view/c-topbar.html?nran=200'"></div>
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+        
+        <div class="container-fluid mb-5">
+			<form ng-submit="submitFormOrder();">	
+				<nav aria-label="breadcrumb">
+				  <ol class="breadcrumb" ng-bind-html="breadcrumb">
+				  </ol>
+				</nav>
+			  <!-- Page Heading -->
+			  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+				<h1 class="h3 mb-0 text-gray-800" ng-bind-html="titlePage">&nbsp;</h1>
+			  </div>
+			  <div class="row">
+					<div class="col-sm-3">
+					  <div class="row">
+						<div class="col-12">
+						  <div class="card shadow mb-4">
+							<div class="card-header py-3">
+							  <h6 class="m-0 font-weight-bold text-primary">Customer</h6>
+							</div>
+							<div class="card-body">
+							  <div class="row">
+								  <div class="form-group col">
+									<label for="tanggal_order">Tanggal Order</label>
+									<input type="date" class="form-control" id="tanggal_order" ng-model="data_form_order.tanggal_order" required="required">
+								  </div>
+							  </div>
+							  <div class="row">
+								  <div class="form-group col">
+									<label for="keterangan">Keterangan</label>
+									<textarea class="form-control" id="keterangan" ng-model="data_form_order.keterangan" rows="5">
+									</textarea>
+								  </div>
+							  </div>
+							  <hr/>
+							  <div class="row">
+								  <div class="form-group col">
+									<label for="nama_pemesan">Nama Pemesan</label>
+									<input type="text" class="form-control" id="nama_pemesan" ng-model="data_form_order.nama_pemesan" ng-keyup="getCustomerByName();">
+								  </div>
+							  </div>
+							  <div class="row" ng-if="data_form_order.nama_pemesan.length > 2 && board_get_customer == true">
+								  <div class="col rounded border border-primary text-dark mx-2">
+									  <div ng-if="loading_get_customer == true">
+										<div align="center"><i class="fa fa-spinner fa-spin fa-2x fa-fw" aria-hidden="true"></i></div>
+									  </div>
+									  <div ng-if="data_customer_by_name.length > 0">
+										<b>Customer Terdaftar:</b>
+										<ul>
+											<li style="cursor:pointer;" ng-repeat="x in data_customer_by_name" ng-click="pilihCustomer(x);" >{{x.nama_lengkap}} - {{x.email}} ({{x.no_telepon}})</li>
+										</ul>
+										<div>&nbsp;</div>
+									  </div>
+									  <div ng-if="data_customer_by_name.length == 0">
+										<b>Customer Tidak Terdaftar</b>
+										<div>&nbsp;</div>
+									  </div>
+								  </div>
+							  </div>
+							  <div class="row" ng-if="data_form_order.status_dropship !== true">
+								  <div class="form-group col">
+									<label for="alamat_tujuan">Alamat Tujuan</label>
+									<textarea class="form-control" id="alamat_tujuan" ng-model="data_form_order.alamat_tujuan" rows="5">
+									</textarea>
+								  </div>
+							  </div>
+							  <br/><br/>
+							  <div class="row">
+								  <div class="form-group col">
+									<div>
+										<div class="form-check form-check-inline">
+										  <input class="form-check-input" type="checkbox" id="status_dropship" ng-model="data_form_order.status_dropship">
+										  <label class="form-check-label" for="status_dropship">
+											Dropship/Reseller
+										  </label>
+										</div>
+									</div>
+								  </div>
+							  </div>
+							  <div class="row" ng-if="data_form_order.status_dropship == true">
+								  <div class="form-group col">
+									<label for="nama_pemesan_dropship">Nama Pemesan Dropship</label>
+									<input type="text" class="form-control" id="nama_pemesan_dropship" ng-model="data_form_order.nama_pemesan_dropship">
+								  </div>
+							  </div>
+							  <div class="row" ng-if="data_form_order.status_dropship == true">
+								  <div class="form-group col">
+									<label for="alamat_tujuan_dropship">Alamat Tujuan Dropship</label>
+									<textarea class="form-control" id="alamat_tujuan_dropship" ng-model="data_form_order.alamat_tujuan_dropship" rows="5">
+									</textarea>
+								  </div>
+							  </div>
+							  <div class="row">
+								  <div class="col">
+									<small class="form-text text-muted">
+										<b>Nama Pemesan</b> dan <b>Alamat Tujuan</b> di isi untuk menetukan tujuan pengiriman barang, dan juga bisa di kosongkan jika pembeli datang ke tempat.<br/><br/>
+										<b>Customer tidak terdaftar</b> tetap dapat diinputkan dan melakukan transaksi.
+									</small>
+								  </div>
+							  </div>
+							</div>
+						  </div>
+						</div>
+					  </div>
+					</div> 
+					<div class="col-sm-9">
+					  <div class="row">
+						<div class="col-12">
+						  <div class="card shadow mb-4">
+							<div class="card-header py-3">
+							  <h6 class="m-0 font-weight-bold text-primary">Produk</h6>
+							</div>
+							<div class="card-body">
+								  <div class="form-group float-right" ng-if="data_form_order.action == 'addOrder'">
+									<div class="form-check">
+									  <input class="form-check-input" type="checkbox" id="mode_input_barang" ng-init="data_form_order.mode_input_barang = false;" ng-model="data_form_order.mode_input_barang" ng-change="changeModeInputBarang();">
+									  <label class="form-check-label" for="mode_input_barang">
+										Mode Input Barang
+									  </label>
+									</div>
+								  </div>
+								  <div class="form-group">
+									<div class="input-group">
+										<input type="text" class="form-control" id="cari_produk" placeholder="Cari produk" autofocus ng-model="data_form_order.cari_produk" ng-keyup="getProductByName();">
+										  <div class="input-group-append" ng-if="data_form_order.mode_input_barang">
+											<button class="btn btn-success" type="button" ng-click="tambahNInsertProdukKeCart(data_form_order.cari_produk);"><i class="fa fa-pencil-square-o"></i></button>
+										  </div>
+									</div>
+								  </div>
+								  <div class="row" ng-if="data_form_order.cari_produk.length > 2">
+									<div class="col-12 rounded border border-primary text-dark mx-2">
+									  <div ng-if="loading_get_product == true">
+										<div align="center"><i class="fa fa-spinner fa-spin fa-2x fa-fw" aria-hidden="true"></i></div>
+									  </div>
+									  <div ng-if="data_product_by_name.length > 0">
+										<b>Produk Digudang:</b>
+										<ul>
+											<li style="cursor:pointer;" ng-repeat="x in data_product_by_name" ng-click="tambahProdukKeCart(x);" ng-class="{'text-danger':((x.pengirim_produk == 'pribadi' && x.stok == 0) || (x.pengirim_produk == 'suplier' && x.stok_status == 'habis'))}">{{x.nama_barang}} <span ng-if="x.stat_varian == 1">({{x.nama_varian}})</span> ({{formatRupiah(x.harga_jual)}})</li>
+										</ul>
+										<div>&nbsp;</div>
+									  </div>
+									  <div ng-if="data_product_by_name.length == 0">
+										<div>&nbsp;</div>
+										<div align="center"><b>Data tidak ditemukan!</b></div>
+										<div>&nbsp;</div>
+									  </div>
+									</div>
+								  </div>
+								  <hr />
+								  <div ng-repeat="xsup in product_cart_suplier">
+									  <div class="row">
+										  <div class="col">
+											<div>Pengirim #<span class="text-capitalize">{{strToObjGetKey(xsup,'pengirim_produk')}}{{strToObjGetKey(xsup,'pengirim_produk_id')}}</span></div>
+											<div>{{strToObjGetKey(xsup,'pengirim_produk_kota')}}</div>
+										  </div>
+									  </div><br/>
+									  <div class="table-responsive">
+										<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+										  <thead>
+											<tr>
+											  <th>#</th>
+											  <th>Nama Produk</th>
+											  <th ng-if="data_form_order.mode_input_barang">Real Stok</th>
+											  <th>Harga <span ng-if="data_form_order.mode_input_barang">Jual</span></th>
+											  <th>Diskon</th>
+											  <th>Jumlah</th>
+											  <th>Subtotal</th>
+											  <th>Berat <br/>/ Total Berat (g)</th>
+											  <th>&nbsp;</th>
+											</tr>
+										  </thead>
+										  <tbody>
+											<tr ng-repeat="x in product_cart | filter:{pengirim_produk:strToObjGetKey(xsup,'pengirim_produk'), id_suplier:strToObjGetKey(xsup,'pengirim_produk_id')}" ng-if="((data_form_order.mode_input_barang === true) || (data_form_order.mode_input_barang === false && x.stat_new_produk === false))">
+											  <td>{{ $index + 1 }}</td>
+											  <td>{{x.nama_barang}} <span ng-if="x.nama_varian != ''">({{x.nama_varian}})</span></td>
+											  <td ng-if="data_form_order.mode_input_barang">
+												<div ng-if="x.stat_new_produk === false">{{x.stok}}</div>
+												<div class="input-group" ng-if="x.stat_new_produk === true">
+												  <input type="number" class="form-control" ng-model="x.stok" min="1" required="required">
+												</div>
+											  </td>
+											  <td>
+												<div ng-if="x.stat_new_produk === false">{{formatRupiah(x.cart_harga_jual)}}</div>
+												<div class="input-group" ng-if="x.stat_new_produk === true">
+												  <input type="number" class="form-control" ng-model="x.cart_harga_jual" min="1" required="required">
+												</div>
+											  </td>
+											  <td>
+												<div ng-if="x.stat_new_produk === false">{{getLabelDiskon(x.diskon,x.diskon_tipe)}}</div>
+												<div class="input-group" ng-if="x.stat_new_produk === true">
+												  <div class="input-group-append" ng-if="x.diskon_tipe == 'nilai'">
+													<button type="button" class="btn btn-outline-info" ng-click=" x.diskon_tipe = 'persen'; ">Rp</button>
+												  </div>
+												  <input type="number" class="form-control" ng-model="x.diskon" min="0" required="required">
+												  <div class="input-group-append" ng-if="x.diskon_tipe == 'persen'">
+													<button type="button" class="btn btn-outline-info" ng-click=" x.diskon_tipe = 'nilai'; ">%</button>
+												  </div>
+												</div>
+											  </td>
+											  <td>
+												<div class="input-group">
+												  <input type="number" class="form-control" ng-model="x.cart_qty" min="1" ng-change="changeCartQty($index, x);" required="required">
+												  <div class="input-group-append" ng-if="x.stat_grosir_qty == '1'">
+													<button type="button" class="btn btn-outline-info" ng-click="openModalGrosir(x.nama_barang,x.harga_grosir)"><i class="fa fa-info-circle" aria-hidden="true"></i></button>
+												  </div>
+												</div>
+											  </td>
+											  <td>
+												{{  formatRupiah(((x.cart_harga_jual-getValueDiskon(x.cart_harga_jual, x.diskon, x.diskon_tipe)) * x.cart_qty))  }}
+											  </td>
+											  <td>
+												<div ng-if="x.stat_new_produk === false">{{x.cart_berat}}</div>
+												<div class="input-group" ng-if="x.stat_new_produk === true">
+												  <input type="number" class="form-control" ng-model="x.cart_berat" min="1" required="required">
+												</div>
+												/ {{x.cart_berat*x.cart_qty}} gram
+											  </td>
+											  <td class="text-center">
+												<button type="button" class="d-none d-sm-inline-block btn btn-sm btn-flat btn-danger shadow-sm" ng-click="deleteCartProduk(x.id_produk, x.id_varian);"><i class="fas fa-trash fa-sm text-white-50"></i></button>
+											  </td>
+											</tr>
+										  </tbody>
+										  <tfoot>
+											<tr>
+											  <th colspan="{{(data_form_order.mode_input_barang)?5:4;}}">Total</th>
+											  <th>{{getSubTotal(xsup, 'qty', product_cart, strToObjGetKey(xsup,'pengirim_produk'), strToObjGetKey(xsup,'pengirim_produk_id'))}}</th>
+											  <th>{{formatRupiah(getSubTotal(xsup, 'harga', product_cart, strToObjGetKey(xsup,'pengirim_produk'), strToObjGetKey(xsup,'pengirim_produk_id')))}}</th>
+											  <th>{{getSubTotal(xsup, 'berat', product_cart, strToObjGetKey(xsup,'pengirim_produk'), strToObjGetKey(xsup,'pengirim_produk_id'))}} gram</th>
+											  <th>&nbsp;</th>
+											</tr>
+										  </tfoot>
+										</table>
+									  </div>
+									  <div class="row">
+										  <div class="form-group col" ng-init=" data_form_order.expedisi[xsup] = (typeof(data_form_order.expedisi[xsup]) != 'undefined')?data_form_order.expedisi[xsup]:'custom'; ">
+											<label for="expedisi">Expedisi</label>
+											<select class="form-control" id="expedisi" ng-model="data_form_order.expedisi[xsup]" ng-change="changeOngkir()" required="required">
+											  <option value="">- Pilih -</option>
+											  <option value="custom">Custom</option>
+											</select>
+										  </div>
+										  <div class="form-group col" ng-if=" data_form_order.expedisi[xsup] != '' && data_form_order.expedisi[xsup] != null && data_form_order.expedisi[xsup] != 'custom' ">
+											<label for="expedisi_service">Expedisi Service</label>
+											<select class="form-control" id="expedisi_service" ng-model="data_form_order.expedisi_service[xsup]" required="required">
+											  <option value="">- Pilih -</option>
+											</select>
+										  </div>
+										  <div class="form-group col" ng-if=" data_form_order.expedisi[xsup] == 'custom' ">
+											<label for="expedisi_service">Expedisi Service</label>
+											<input type="text" class="form-control" id="expedisi_service" ng-model="data_form_order.expedisi_service[xsup]" required="required">
+										  </div>
+										  <div class="form-group col" ng-init="data_form_order.biaya_kirim[xsup] = (typeof(data_form_order.biaya_kirim[xsup]) != 'undefined')?data_form_order.biaya_kirim[xsup]:0;">
+											<label for="biaya_kirim">Ongkir per Kilo</label>
+											<input type="number" class="form-control" id="biaya_kirim" ng-model="data_form_order.biaya_kirim[xsup]" required="required" min="0" ng-change="changeOngkir()" ng-readonly=" data_form_order.expedisi[xsup] != 'custom' ">
+										  </div>
+										  <div class="form-group col">
+											<label for="berat">Berat</label>
+											<input type="number" class="form-control" id="berat" ng-model="data_form_order.berat[xsup]" required="required" readonly="readonly">
+										  </div>
+										  <div class="form-group col" ng-init="data_form_order.total_ongkir[xsup] = (typeof(data_form_order.total_ongkir[xsup]) != 'undefined')?data_form_order.total_ongkir[xsup]:0;">
+											<label for="total_ongkir">Total Ongkir</label>
+											<input type="text" class="form-control" id="total_ongkir" required="required" min="0" readonly="readonly" value="{{formatRupiah(data_form_order.total_ongkir[xsup])}}">
+										  </div>
+									  </div>
+									  <div class="row">
+										<div class="col">
+											<button type="button" class="btn btn-block btn-info btn-sm" ng-click="changeOngkir()"><i class="fa fa-refresh fa-fw" aria-hidden="true"></i>Hitung Ongkir</button>
+										</div>
+									  </div>
+									  <hr />
+								  </div>
+								  <div class="row">
+									  <div class="col-12 mt-5">
+										<h4><b>Grand Total</b></h4>
+									  </div>
+									  <div class="col">
+										<div>Total Qty</div>
+										<div>{{getGrandTotal('qty', product_cart)}}</div>
+									  </div>
+									  <div class="col">
+										<div>Total Berat</div>
+										<div>{{getGrandTotal('berat', product_cart)}} gram</div>
+									  </div>
+									  <div class="col">
+										<div>Total Belanja</div>
+										<div>{{formatRupiah(getGrandTotal('harga', product_cart))}}</div>
+									  </div>
+									  <div class="col">
+										<div>Total Ongkir</div>
+										<div>{{formatRupiah(getGrandTotalOngkir())}}</div>
+									  </div>
+								  </div>
+							</div>
+						  </div>
+						</div>
+					  </div>
+					  <div class="row">
+						<div class="col-12">
+						  <div class="card shadow mb-4">
+							<div class="card-header py-3">
+							  <h6 class="m-0 font-weight-bold text-primary">Pembayaran</h6>
+							</div>
+							<div class="card-body">
+							  <div class="row" ng-if=" data_form_order.customer.diskon_nilai > 0">
+								  <div class="form-group col">
+									<h5><b>{{data_form_order.customer.membership}} Membership : Diskon {{(data_form_order.customer.diskon_tipe == 'persen')?data_form_order.customer.diskon_nilai+'%':formatRupiah(data_form_order.customer.diskon_nilai)}}</b></h5>
+								  </div>
+							  </div>
+							  <div class="row">
+								  <div class="form-group col-3">
+									<label for="diskon_order_tipe">Diskon Order</label>
+									<select class="form-control" id="diskon_order_tipe" ng-model="data_form_order.diskon_order_tipe" ng-change="changeDiskonOrderTipe(); setDiskonOrderNilai(getGrandTotal('harga', product_cart));">
+									  <option value="">- Tidak -</option>
+									  <option value="nilai">Rp</option>
+									  <option value="persen">%</option>
+									</select>
+								  </div>
+								  <div class="form-group col-3">
+									<label for="diskon_order_input">&nbsp;</label>
+									<div class="input-group">
+									  <div class="input-group-prepend" ng-if="data_form_order.diskon_order_tipe == 'nilai'">
+										<button type="button" class="btn btn-outline-info">Rp</button>
+									  </div>
+									  <input type="number" class="form-control" id="diskon_order_input" required="required" min="0" ng-model="data_form_order.diskon_order_input" ng-change="setDiskonOrderNilai(getGrandTotal('harga', product_cart))" ng-readonly="data_form_order.diskon_order_tipe == '' || data_form_order.diskon_order_tipe == 'membership'">
+									  <div class="input-group-append" ng-if="data_form_order.diskon_order_tipe == 'persen'">
+										<button type="button" class="btn btn-outline-info">%</button>
+									  </div>
+									</div>
+								  </div>
+								  <div class="form-group col-3">
+									<label for="">Nilai Diskon Order</label>
+									<input type="text" class="form-control-plaintext" id="" ng-value="formatRupiah(data_form_order.diskon_order_nilai)" readonly>
+								  </div>
+							  </div>
+							  <div class="row mt-5 mb-3">
+								  <div class="form-group col text-center">
+									<h1><b>Total Tagihan <br/> {{ formatRupiah((getGrandTotal('harga_n_diskon', product_cart)+getGrandTotalOngkir())) }}</b></h1>
+								  </div>
+							  </div>
+							  <div class="row">
+								  <div class="form-group col-3">
+									<label for="status_order">Status Order</label>
+									<select class="form-control" id="status_order" ng-model="data_form_order.status_order">
+									  <option value="Preparation In Progress">Preparation In Progress</option>
+									  <option value="On Process">On Process</option>
+									  <option value="Shipping">Shipping</option>
+									  <option value="Delivered">Delivered</option>
+									</select>
+								  </div>
+								  <div class="form-group col-3">
+									<label for="status_bayar">Status Bayar</label>
+									<select class="form-control" id="status_bayar" ng-model="data_form_order.status_bayar">
+									  <option value="belum">Belum</option>
+									  <option value="sudah">Sudah</option>
+									</select>
+								  </div>
+								  <div class="form-group col-3" ng-if=" data_form_order.status_bayar == 'sudah' "  ng-init=" data_form_order.no_resi = (typeof(data_form_order.no_resi) != 'undefined')?data_form_order.no_resi:''; ">
+									<label for="no_resi"><b>No Resi</b></label>
+									<input type="text" class="form-control" id="no_resi" ng-model="data_form_order.no_resi">
+								  </div>
+								  <div class="form-group col-3">
+									&nbsp;
+								  </div>
+							  </div>
+							</div>
+						  </div>
+						</div>
+					  </div>
+					  <div class="row">
+						<div class="col-12">
+						  <button type="submit" class="btn btn-block btn-info" ng-disabled="product_cart.length == 0">Order</button>
+						</div>
+					  </div>
+					</div> 
+			  </div> 
+			</form>
+        </div>
+        <!-- /.container-fluid -->
+
+
+<div class="modal modal-grosir" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Harga Grosir <span class="nama-produk">#nama_produk</span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info mx-auto" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal modal-confirm-order" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Konfirmasi</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		<form>
+			<div ng-show="data_form_order.status_bayar == 'sudah'">
+				<div class="form-group row">
+					<label for="tagihan" class="col-4 col-form-label">Tagihan</label>
+					<div class="col-6">
+					  <input type="text" readonly class="form-control-plaintext text-right" id="tagihan" ng-value="formatRupiah((getGrandTotal('harga_n_diskon', product_cart)+getGrandTotalOngkir()))" >
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="dibayar" class="col-4 col-form-label">Dibayar</label>
+					<div class="col-6">
+					  <input type="number" class="form-control text-right" id="dibayar" ng-model="data_form_order.transaksi_dibayar" ng-keyup="calcTransaksi();" >
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="kembalian" class="col-4 col-form-label">Kembalian</label>
+					<div class="col-6">
+					  <input type="text" readonly class="form-control-plaintext text-right" id="kembalian" ng-value="formatRupiah(data_form_order.transaksi_dibayar-(getGrandTotal('harga_n_diskon', product_cart)+getGrandTotalOngkir()))" >
+					</div>
+				</div>
+				<div class="row">
+					<div class="col">
+					  &nbsp;
+					</div>
+				</div>
+			</div>
+			<div class="row text-center">
+				<div class="col">
+					<button type="button" class="btn btn-primary mx-auto" ng-click="saveFormOrder()"        ng-disabled="((data_form_order.transaksi_dibayar-(getGrandTotal('harga_n_diskon', product_cart)+getGrandTotalOngkir())) < 0 && data_form_order.status_bayar == 'sudah')">Save Only</button>
+					<button type="button" class="btn btn-success mx-auto" ng-click="saveFormOrder('print')" ng-disabled="((data_form_order.transaksi_dibayar-(getGrandTotal('harga_n_diskon', product_cart)+getGrandTotalOngkir())) < 0 && data_form_order.status_bayar == 'sudah')">Save & Print</button>
+				</div>
+			</div>
+		</form>
+      </div>
+    </div>
+  </div>
+</div>
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+      </div>
+      <!-- End of Main Content -->
+	  <div ng-include="'./view/c-footer-sticky.html?nran=200'"></div>
+    </div>
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
+<div ng-include="'./view/c-additional.html?nran=200'"></div>
+
+
+<script>
+$(document).ready(function(){
+	document.getElementById("cari_produk").focus();
+});
+</script>

@@ -1,0 +1,202 @@
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+	<div style="background-color: #254dc0;" ng-include="'./view/c-sidebar.html?nran=200'"></div>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+		<div ng-include="'./view/c-topbar.html?nran=200'"></div>
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+<!---------------------------------------------------------- Begin Page Content ---------------------------------------------------------------->
+        
+        <div class="container-fluid">
+			<nav aria-label="breadcrumb">
+			  <ol class="breadcrumb" ng-bind-html="breadcrumb">
+			  </ol>
+			</nav>
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Manajemen Customer</h1>
+            <a href="javascript:void(0);" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" ng-click="addCustomer();"><i class="fas fa-plus fa-sm text-white-50"></i> Tambah</a>
+          </div>
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">List Customer</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+					  <th>Membership</th>
+					  <th>Nama Customer</th>
+					  <th>Telepon</th>
+					  <th>Alamat</th>
+                      <th>Aktif</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>#</th>
+					  <th>Membership</th>
+					  <th>Nama Customer</th>
+					  <th>Telepon</th>
+					  <th>Alamat</th>
+                      <th>Aktif</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    <tr ng-repeat="x in data_table_customer">
+                      <td>{{ $index + 1 }}</td>
+					  <td>{{x.nama_membership}}</td>
+					  <td>{{x.nama_lengkap}}</td>
+					  <td>{{x.no_telepon}}</td>
+					  <td>{{x.alamat_lengkap}}</td>
+                      <td>{{aktifLabel(x.aktif)}}</td>
+                      <td class="text-center">
+						<button type="button" class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm" ng-click="updateCustomer(x);"><i class="fas fa-edit fa-sm text-white-50"></i> Edit</button>
+						<button type="button" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm" ng-click="deleteCustomer(x.id);"><i class="fas fa-trash fa-sm text-white-50"></i> Hapus</button>
+					  </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        
+        </div>
+        <!-- /.container-fluid -->
+		
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+<!------------------------------------------------------------ End Page Content ------------------------------------------>
+      </div>
+      <!-- End of Main Content -->
+	  <div ng-include="'./view/c-footer-sticky.html?nran=200'"></div>
+    </div>
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
+<div ng-include="'./view/c-additional.html?nran=200'"></div>
+
+<!-- Modal -->
+<div class="modal" id="modalFormCustomer" tabindex="-1" role="dialog" aria-labelledby="modalFormCustomerLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+	<form ng-submit="submitFormCustomer();">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalFormCustomerLabel">Form Customer</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		  <div class="row">
+			  <div class="form-group col">
+				<label for="id_membership">Membership</label>
+				<select class="form-control" id="id_membership" placeholder="Input membership" ng-model="data_form_customer.id_membership" required="required">
+					<option value="">-Pilih-</option>
+					<option ng-repeat="x in data_membership" value="{{x.id}}">{{x.nama}}</option>
+					
+				</select>
+			  </div>
+			  <div class="form-group col">
+				<label for="nama_lengkap">Nama Lengkap</label>
+				<input type="text" class="form-control" id="nama_lengkap" placeholder="Input nama lengkap" ng-model="data_form_customer.nama_lengkap" required="required">
+			  </div>
+			  <div class="form-group col">
+				<label for="no_telepon">No Telepon</label>
+				<input type="text" class="form-control" id="no_telepon" placeholder="Input no telepon" ng-model="data_form_customer.no_telepon" required="required">
+			  </div>
+			  <div class="form-group col">
+				<label for="email">Email</label>
+				<input type="text" class="form-control" id="email" placeholder="Input email" ng-model="data_form_customer.email" required="required">
+			  </div>
+		  </div>
+		  <div class="row">
+			  <div class="form-group col">
+				<label for="id_propinsi">Propinsi</label>
+				<select class="form-control" id="id_propinsi" placeholder="Input propinsi" ng-model="data_form_customer.id_propinsi" required="required" ng-change="loadDataKabupaten(data_form_customer.id_propinsi);" ng-disabled="objLength(data_propinsi) == 0">
+					<option value="">-Pilih-</option>
+					<option ng-repeat="x in data_propinsi" value="{{x.provinsi}}">{{x.provinsi}}</option>
+				</select>
+			  </div>
+			  <div class="form-group col">
+				<label for="id_kabupaten">Kota/Kab</label>
+				<select class="form-control" id="id_kabupaten" placeholder="Input kota" ng-model="data_form_customer.id_kabupaten" required="required" ng-change="loadDataKecamatan(data_form_customer.id_propinsi,data_form_customer.id_kabupaten);" ng-disabled="objLength(data_kabupaten) == 0">
+					<option value="">-Pilih-</option>
+					<option ng-repeat="x in data_kabupaten" value="{{x.kota_kab}}">{{x.kota_kab}}</option>
+				</select>
+			  </div>
+			  <div class="form-group col">
+				<label for="id_kecamatan">Kecamatan</label>
+				<select class="form-control" id="id_kecamatan" placeholder="Input kecamatan" ng-model="data_form_customer.id_kecamatan" required="required" ng-change="loadDataKelurahan(data_form_customer.id_propinsi,data_form_customer.id_kabupaten,data_form_customer.id_kecamatan);" ng-disabled="objLength(data_kecamatan) == 0">
+					<option value="">-Pilih-</option>
+					<option ng-repeat="x in data_kecamatan" value="{{x.kecamatan}}">{{x.kecamatan}}</option>
+				</select>
+			  </div>
+			  <div class="form-group col">
+				<label for="id_kelurahan">Kelurahan/Desa</label>
+				<select class="form-control" id="id_kelurahan" placeholder="Input kelurahan" ng-model="data_form_customer.id_kelurahan" required="required" ng-change="loadDataKodePOS(data_form_customer.id_propinsi,data_form_customer.id_kabupaten,data_form_customer.id_kecamatan,data_form_customer.id_kelurahan);" ng-disabled="objLength(data_kelurahan) == 0">
+					<option value="">-Pilih-</option>
+					<option ng-repeat="x in data_kelurahan" value="{{x.kelurahan}}">{{x.kelurahan}}</option>
+				</select>
+			  </div>
+		  </div>
+		  <div class="form-group">
+			<label for="kode_pos">Kode POS</label>
+			<input type="text" class="form-control" id="kode_pos" placeholder="Input kode POS" ng-model="data_form_customer.kode_pos" required="required">
+		  </div>
+		  <div class="form-group">
+			<label for="alamat_lengkap">Alamat Lengkap</label>
+			<textarea class="form-control" id="alamat_lengkap" placeholder="Input alamat lengkap" ng-model="data_form_customer.alamat_lengkap" required="required"></textarea>
+		  </div>
+		  <div class="form-group">
+			<label for="aktif">Aktif</label>
+			<select class="form-control" id="aktif" ng-model="data_form_customer.aktif" required="required">
+			  <option value="">- Pilih -</option>
+			  <option value="1">Ya</option>
+			  <option value="0">Tidak</option>
+			</select>
+		  </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+	</form>
+    </div>
+  </div>
+</div>
+<script>
+function loadDataPropinsi(){
+	console.log("loadDataPropinsi");
+	var url = "http://dev.farizdotid.com/api/daerahindonesia/provinsi";
+	$.ajax({
+		url:url,
+		dataType:"jsonp",
+		type:"get",
+		contentType:"application/json",
+		crossDomain: true,
+		success:function(obj){
+			console.log(obj);
+		},
+		error:function(obj){
+			console.log(obj);
+		},
+		complete:function(obj){
+			console.log(obj);
+		}
+	});
+}
+$(document).ready(function(){
+	//loadDataPropinsi();
+});
+</script>

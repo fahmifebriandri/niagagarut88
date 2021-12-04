@@ -1,0 +1,58 @@
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="javascript:void(0);" target="_self" onclick="openIndex();">
+        <div class="sidebar-brand-icon">
+          <!-- <i class="fas fa-laugh-wink"></i> -->
+		  <img src="../assets/niagagarut88/NG-001.png" width="30px">
+        </div>
+        <div class="sidebar-brand-text mx-3">NG88</div>
+      </a>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+	   
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item" ng-repeat="x in appMenu | filter :{parent:'0'}">
+        <a ng-show="x.have_child == 0" class="nav-link" href="{{x.url}}">
+          <i class="fas fa-fw {{x.icon}}"></i>
+          <span>{{x.name}}</span>
+		  <i class="fas fa-fw fa-bell text-warning bounce" ng-if="x.name == 'Support' && jumlah_pesan_baru > 0"></i>
+		</a>
+		<a ng-show="x.have_child == 1" class="nav-link collapsed" href="{{x.url}}" data-toggle="collapse" data-target="#collapseTwo{{x.id}}" aria-expanded="true" aria-controls="collapseTwo{{x.id}}">
+          <i class="fas fa-fw {{x.icon}}"></i>
+          <span>{{x.name}}</span>
+        </a>
+		
+        <div ng-show="x.have_child == 1" id="collapseTwo{{x.id}}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">{{x.name}} Menu</h6>
+            <a ng-repeat="x2 in appMenu | filter :{parent:x.id}" class="collapse-item" href="{{x2.url}}">{{x2.name}}</a>
+          </div>
+        </div>
+      </li>
+	  
+	  <!-- Divider -->
+	  <hr class="sidebar-divider">
+    </ul>
+    <!-- End of Sidebar -->
+<script>
+function openIndex(){
+	window.location.assign(BASE_URL);
+}
+$(document).ready(function(){
+	var thisUrl = window.location.hash;
+	var thisLocation = "#!/"+thisUrl.substring(3).split("/")[0];
+	var selectedMenu= $("li.nav-item").find("a[href='"+thisLocation+"']");
+	var p = selectedMenu.parents("div.collapse");
+	if(p.length == 1){
+		selectedMenu.parents("li.nav-item").addClass("active");
+		selectedMenu.parents("li.nav-item").find("a.collapsed").removeClass("collapsed");
+		selectedMenu.parents("div.collapse").addClass("show");
+		selectedMenu.addClass("active");
+	}else{
+		selectedMenu.parents("li.nav-item").addClass("active");
+	}
+});
+</script>
