@@ -107,7 +107,7 @@
 	</style>
 </head>
 <body>
-	<div class="container-fluid bg-strip">
+	<div class="container-fluid bg-strip" id="beranda">
 		<div class="container">
 		  <div class="row hide-on-mobile" style="margin-top:20px;">
 			<div class="col-sm">
@@ -115,11 +115,10 @@
 			</div>
 			<div class="col-sm">
 				<div class="d-flex flex-row align-items-center header-menu">
-				  <div class="px-2"><a href="#" style="color:#01ADEF;">Beranda</a></div>
-				  <div class="px-2"><a href="#">Fitur</a></div>
-				  <div class="px-2"><a href="#">Screenshot</a></div>
-				  <div class="px-2"><a href="#">Download</a></div>
-				  <div class="px-2"><a href="#">Kontak</a></div>
+				  <div class="px-2"><a href="#beranda" style="color:#01ADEF;">Beranda</a></div>
+				  <div class="px-2"><a href="#fitur">Fitur</a></div>
+				  <div class="px-2"><a href="#download">Download</a></div>
+				  <div class="px-2"><a href="#kontak">Kontak</a></div>
 				</div>
 			</div>
 		  </div>
@@ -157,7 +156,7 @@
 		  </div>
 		</div>
 	</div>
-	<div class="container" style="margin-top:40px;">
+	<div class="container" style="margin-top:40px;" id="fitur">
 		<div class="row">
 			<div class="col-sm text-header1 text-center">
 				Kenapa harus menggunakan aplikasi mobile NIAGAGARUT88?
@@ -242,7 +241,7 @@
 		</div>
 	</div>
 	-->
-	<div class="container-fluid bg-strip">
+	<div class="container-fluid bg-strip" id="download">
 		<div class="container">
 			<div class="row">
 				<div class="col-sm text-header1 text-center">
@@ -276,7 +275,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="container-fluid">
+	<div class="container-fluid" id="kontak">
 		<div class="container">
 			<div class="row">
 				<div class="col-sm text-header1 text-center">
@@ -292,9 +291,10 @@
 					  <div class="flex-grow-1 ms-3 text-end">
 						<div class="fitur-box-title">Belanja langsung di alamat dibawah ini:</div>
 						<div class="fitur-box-desc">
-							Jl. Niaga No. 88 RT.003 RW.005<br />
-							Kecamatan Garut Kabupaten Garut<br />
-							Jawa Barat - 14796<br />
+							JL. Gordah Belakang No 38<br />
+							Kelurahan Jayawaras Kecamatan Tarogong Kidul<br />
+							Kabupaten Garut - 44151<br />
+							Propinsi Jawa Barat<br />
 						</div>
 					  </div>
 					</div>
