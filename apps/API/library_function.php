@@ -32,9 +32,9 @@ function upload_data_to_image($data_image, $new_image_name, $old_image_name,$fol
 	if($image_type == "png"){	
 		$im = imagecreatefrompng($file_disp);
 		imagealphablending($im, false);
-		imagesavealpha($im, true);
 		//$size = min(imagesx($im), imagesy($im));
 		$im2 = imagecrop($im, ['x' => 0, 'y' => 0, 'width' => $width, 'height' => $height]);
+		imagesavealpha($im2, true);
 		if ($im2 !== FALSE) {
 			imagepng($im2, $file_disp);
 			imagedestroy($im2);
