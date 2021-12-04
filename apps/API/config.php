@@ -6,9 +6,9 @@ session_start();
 
 function db_conn(){
 	$servername = "localhost";
-	$username = "root";
-	$password = "";
-	$dbname = "k9348184_acash";
+	$username = "u1005291_niagagarut88";
+	$password = "u1005291_niagagarut88";
+	$dbname = "u1005291_niagagarut88";
 	$conn = new mysqli($servername, $username, $password, $dbname);
 	if ($conn->connect_error){ die("Connection failed: " . $conn->connect_error); }
 	return $conn;

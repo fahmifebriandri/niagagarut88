@@ -1,7 +1,7 @@
 //Default JavaScript
 console.log("load default_javascript.js");
 
-var BASE_URL = window.location.protocol+"//localhost/myweb/NiagaGarut88/apps/";
+var BASE_URL = window.location.protocol+"//niagagarut88.com/apps/";
 var URL_API_SERVER = BASE_URL+"API/";
 //var $jq = $.noConflict();
 
