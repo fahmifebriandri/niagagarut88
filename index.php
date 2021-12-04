@@ -303,7 +303,7 @@
 				<div class="col-sm" style="border-left:2px solid #01ADEF;">
 					<ul class="list-group mt-4" style="font-size: 13px;">
 					  <li class="list-group-item border-0 px-0 py-2"><img src="./assets/niagagarut88/icon - telegram.png" style="max-width:15px;margin-right:20px;"> info@niagagarut88.com</li>
-					  <li class="list-group-item border-0 px-0 py-2"><img src="./assets/niagagarut88/icon - whatsapp.png" style="max-width:15px;margin-right:20px;"> 0812-xxxx-xxxx</li>
+					  <li class="list-group-item border-0 px-0 py-2"><img src="./assets/niagagarut88/icon - whatsapp.png" style="max-width:15px;margin-right:20px;"> 081-5715-9026</li>
 					  <li class="list-group-item border-0 px-0 py-2"><img src="./assets/niagagarut88/icon - facebook.png" style="max-width:15px;margin-right:20px;"> Niaga Garut 88</li>
 					  <li class="list-group-item border-0 px-0 py-2"><img src="./assets/niagagarut88/icon - instagram.png" style="max-width:15px;margin-right:20px;"> @niagagarut88</li>
 					</ul>
