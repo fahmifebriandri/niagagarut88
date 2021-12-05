@@ -142,8 +142,8 @@
 					Download:
 			  </div>
 			  <div class="d-flex flex-row align-items-center justify-content-center">
-					<div class="p-2"><a href=""><img src="./assets/niagagarut88/download - android.png" width="140px"/></a></div>
-					<div class="p-2"><a href=""><img src="./assets/niagagarut88/download.png" width="140px"/></a></div>
+					<div class="p-2"><a href="#"><img src="./assets/niagagarut88/download - android.png" width="140px"/></a></div>
+					<div class="p-2"><a href="./apps/assets/NiagaGarut88.apk"><img src="./assets/niagagarut88/download.png" width="140px"/></a></div>
 			  </div><br />
 			</div>
 			<div class="col-sm" style="
@@ -268,8 +268,8 @@
 			<div class="row pb-3">
 				<div class="col-sm">
 					  <div class="d-flex flex-row align-items-center justify-content-center">
-							<div class="p-2"><a href=""><img src="./assets/niagagarut88/download - android.png" width="140px"/></a></div>
-							<div class="p-2"><a href=""><img src="./assets/niagagarut88/download.png" width="140px"/></a></div>
+							<div class="p-2"><a href="#"><img src="./assets/niagagarut88/download - android.png" width="140px"/></a></div>
+							<div class="p-2"><a href="./apps/assets/NiagaGarut88.apk"><img src="./assets/niagagarut88/download.png" width="140px"/></a></div>
 					  </div><br />
 				</div>
 			</div>
