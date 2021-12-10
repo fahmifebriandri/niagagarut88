@@ -170,8 +170,8 @@
 				  <div class="flex-grow-1 ms-3">
 					<div class="fitur-box-title">Beli kebutuhan rumah tangga sambil rebahan</div>
 					<div class="fitur-box-desc">
-						Mau beli beras atau butuh alat rumah tangga tapi malas pergi ke toko?<br />
-						Tinggal pesan dari aplikasi <span class="color-primer">NIAGAGARUT88</span>, pesanan akan datang sendiri ke rumah anda.
+						Kebutuhan sambako atau alat rumah tangga anda bisa dipenuhi tanpa harus pergi.<br />
+						Tinggal pesan dari aplikasi <span class="color-primer">Niaga Garut 88</span>, pesanan akan datang sendiri kerumah anda.
 					</div>
 				  </div>
 				</div>
