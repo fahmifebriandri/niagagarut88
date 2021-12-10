@@ -132,10 +132,9 @@
 			  </div>
 			  <div style="font-size:15px;">
 				Niaga Garut 88 adalah toko kebutuhan rumah tangga, sembako,
-				dan frozen food yang berasal dari Garut. 
-				Kami mendirikan ini untuk mempermudah pemesanan 
-				dan lebih dekat dengan konsumen,
-				kami berinovasi dengan meluncurkan aplikasi mobile NIAGAGARUT88.
+				dan frozen food yang berasal dari Garut.
+				Kami hadir untuk mempermudah pemesanan dan lebih dekat 
+				dengan konsumen, kami berinovasi dengan aplikasi Niaga Garut 88.
 			  </div>
 			  <br /><br />
 			  <div class="text-header2">
