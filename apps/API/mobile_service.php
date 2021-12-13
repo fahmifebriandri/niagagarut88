@@ -120,6 +120,7 @@ else if($action == "getProductDetail"){
 	$res['data_produk_varian'] = db_select("
 						SELECT * FROM `tb_produk_varian`
 						WHERE hapus = '0'
+						and stok > 0 
 						and id_user_owner = ".$id_user_owner."
 						".$where_v."
 					;");
