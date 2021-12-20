@@ -55,12 +55,12 @@ else if($action == "appLogin"){
 								ORDER BY a.`parent`, a.`urut`;
 	");
 	
+	$id_user_owner = $res['user']['data'][0]['id'];
 	$res['profile_toko'] = db_select("
 								SELECT a.* FROM `tb_profile_toko` a
 								INNER JOIN `app_user` b ON b.id = a.id_user_owner
 								WHERE 
-								b.email = '".$data_user['email']."' and 
-								b.password = '".md5($data_user['password'])."' 
+								a.id_user_owner = '".$id_user_owner."' 
 	");
 	echo json_encode($res);
 }
