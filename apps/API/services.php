@@ -1272,7 +1272,8 @@ else if($action == "loadDataOrder"){
 			$where_filter .= " and (DATE_FORMAT(a.tanggal_order,'%Y-%m-%d') >= DATE_FORMAT('".explode("T",$data_filter['tanggal_mulai'])[0]."','%Y-%m-%d') and DATE_FORMAT(a.tanggal_order,'%Y-%m-%d') <= DATE_FORMAT('".explode("T",$data_filter['tanggal_akhir'])[0]."','%Y-%m-%d')) ";
 		}
 	}
-	$sql = "SELECT a.* FROM `vw_order` a
+	$sql = "SELECT a.*, b.no_telepon FROM `vw_order` a
+						LEFT JOIN `tb_customer` b ON b.id = a.id_customer
 								where 
 									a.hapus='0' 
 									and a.id_user_owner = '".$id_user_owner."' 
