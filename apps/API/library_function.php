@@ -7,7 +7,6 @@ function dd($x){
 	die();
 }
 function upload_data_to_image($data_image, $new_image_name, $old_image_name,$folder_upload){
-	$new_image_name = str_replace("\\","-",str_replace("/","-",$new_image_name));
 	$UPLOAD_DIR_ORI = $folder_upload.'original/';
 	$UPLOAD_DIR_DISP = $folder_upload.'display/';
 	@unlink($UPLOAD_DIR_ORI . $old_image_name);

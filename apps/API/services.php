@@ -260,7 +260,7 @@ else if($action == "updateProfileToko"){
 	$old_image_name = db_select("SELECT logo FROM `tb_profile_toko` where id_user_owner = '".$id_user_owner."';")['data'][0]['logo'];
 	$logo_name = "";
 	if(isset($data_profile['logo']) and $data_profile['logo'] != $old_image_name){
-		$new_image_name = date("Ymdhisa")."-".md5(uniqid())."-".str_replace(" ","-",$data_profile['nama']);
+		$new_image_name = date("Ymdhisa")."-".md5(uniqid())."-".str_replace("\\","-",str_replace("/","-",str_replace(" ","-",$data_profile['nama'])));
 		$ext = upload_data_to_image($data_profile['logo'],$new_image_name,$old_image_name,'../assets/upload/logo/');
 		$logo_name = $new_image_name.$ext;
 	}else{
@@ -381,7 +381,7 @@ else if($action == "addKategori"){
 	}else{
 		$foto_name = "";
 		if(isset($data_kategori['foto_file']) and $data_kategori['foto_file'] != ""){
-			$new_image_name = date("Ymdhisa")."-".md5(uniqid())."-".str_replace(" ","-",$data_kategori['nama']);
+			$new_image_name = date("Ymdhisa")."-".md5(uniqid())."-".str_replace("\\","-",str_replace("/","-",str_replace(" ","-",$data_kategori['nama'])));
 			$ext = upload_data_to_image($data_kategori['foto_file'],$new_image_name,null,'../assets/upload/kategori/');
 			$foto_name = $new_image_name.$ext;
 		}
@@ -415,7 +415,7 @@ else if($action == "updateKategori"){
 		
 		$foto_name = @$data_kategori['foto'];
 		if(isset($data_kategori['foto_file']) and $data_kategori['foto_file'] != ""){
-			$new_image_name = date("Ymdhisa")."-".md5(uniqid())."-".str_replace(" ","-",$data_kategori['nama']);
+			$new_image_name = date("Ymdhisa")."-".md5(uniqid())."-".str_replace("\\","-",str_replace("/","-",str_replace(" ","-",$data_kategori['nama'])));
 			$ext = upload_data_to_image($data_kategori['foto_file'],$new_image_name,$foto_name,'../assets/upload/kategori/');
 			$foto_name = $new_image_name.$ext;
 		}
@@ -1016,7 +1016,7 @@ else if($action == "addProduk"){
 			}
 			$foto_name = "";
 			if(isset($varian['foto_file']) and $varian['foto_file'] != ""){
-				$new_image_name = date("Ymdhisa")."-".md5(uniqid())."-".str_replace(" ","-",$data_produk['nama_barang']);
+				$new_image_name = date("Ymdhisa")."-".md5(uniqid())."-".str_replace("\\","-",str_replace("/","-",str_replace(" ","-",$data_produk['nama_barang'])));
 				$ext = upload_data_to_image($varian['foto_file'],$new_image_name,null,'../assets/upload/produk/');
 				$foto_name = $new_image_name.$ext;
 			}
@@ -1096,7 +1096,7 @@ else if($action == "updateProduk"){
 			}
 			$foto_name = @$varian['foto'];
 			if(isset($varian['foto_file']) and $varian['foto_file'] != ""){
-				$new_image_name = date("Ymdhisa")."-".md5(uniqid())."-".str_replace(" ","-",$data_produk['nama_barang']);
+				$new_image_name = date("Ymdhisa")."-".md5(uniqid())."-".str_replace("\\","-",str_replace("/","-",str_replace(" ","-",$data_produk['nama_barang'])));
 				$ext = upload_data_to_image($varian['foto_file'],$new_image_name,$foto_name,'../assets/upload/produk/');
 				$foto_name = $new_image_name.$ext;
 			}
