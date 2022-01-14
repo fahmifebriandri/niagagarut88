@@ -267,7 +267,7 @@ else if($action == "updateProfileToko"){
 		$logo_name = $old_image_name;
 	}
 	
-	
+	$data_profile = ar_str_safe($data_profile);
 	$res = db_select("SELECT * FROM `tb_profile_toko` where id_user_owner = '".$id_user_owner."' ;")['data'];
 	if($res > 0){
 		db_exec("UPDATE `tb_profile_toko` SET 
@@ -990,6 +990,7 @@ else if($action == "addProduk"){
 	$id_user_owner=($created_by == 1)?$id_user:$created_by;
 	
 	$data_produk = $request['data_produk'];
+	$data_produk = ar_str_safe($data_produk);
 	$query = "INSERT INTO `tb_produk` SET
 								id_suplier = '".((isset($data_produk['id_suplier']))?$data_produk['id_suplier']:"")."',
 								pengirim_produk = '".@$data_produk['pengirim_produk']."',
@@ -1003,7 +1004,7 @@ else if($action == "addProduk"){
 								id_user_owner = '".$id_user_owner."',
 								created_by = '".$id_user."'
 					;";
-	echo $query; die();
+	//echo $query; die();
 	$id_produk = db_insert($query);
 	if(is_numeric($id_produk) and count($data_produk['data_varian']) >0 ){
 		foreach($data_produk['data_varian'] as $varian){
@@ -1069,6 +1070,7 @@ else if($action == "updateProduk"){
 	$id_user_owner=($created_by == 1)?$id_user:$created_by;
 	
 	$data_produk = $request['data_produk'];
+	$data_produk = ar_str_safe($data_produk);
 	$result = db_exec("UPDATE `tb_produk` SET 
 											id_suplier = '".((isset($data_produk['id_suplier']))?$data_produk['id_suplier']:"")."',
 											pengirim_produk = '".@$data_produk['pengirim_produk']."',
@@ -1386,6 +1388,7 @@ else if($action == "addOrder"){
 			and $data_form_order['mode_input_barang'] === true
 			and $data_product_cart_row['stat_new_produk'] === true
 		){
+				$data_product_cart_row = ar_str_safe($data_product_cart_row);
 				$id_produk = db_insert("INSERT INTO `tb_produk` SET
 											id_suplier = '',
 											pengirim_produk = '".$data_product_cart_row['pengirim_produk']."',
@@ -1455,6 +1458,7 @@ else if($action == "addOrder"){
 					;");
 	$id_order = $result['id_order'];
 	foreach($data_product_cart as $data_product_cart_row){
+		$data_product_cart_row = ar_str_safe($data_product_cart_row);
 		$result['id_order_cart'][] = db_insert("INSERT INTO `tb_order_cart` SET
 										id_order = '".$id_order."',
 										id_suplier = '".$data_product_cart_row['id_suplier']."',
@@ -1612,6 +1616,7 @@ else if($action == "updateOrder"){
 					;");
 	//$id_order = $result['id_order'];
 	foreach($data_product_cart as $data_product_cart_row){
+		$data_product_cart_row = ar_str_safe($data_product_cart_row);
 		$result['id_order_cart'][] = db_insert("INSERT INTO `tb_order_cart` SET
 										id_order = '".$id_order."',
 										id_suplier = '".$data_product_cart_row['id_suplier']."',

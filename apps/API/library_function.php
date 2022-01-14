@@ -98,4 +98,12 @@ function upload_data_to_image($data_image, $new_image_name, $old_image_name,$fol
 	}
 	return $ext;
 }
+function ar_str_safe($ar_str){
+	foreach($ar_str as $key => $val){
+		if(is_string($val)){
+			$ar_str[$key] = addslashes($val);
+		}
+	}	
+	return $ar_str;
+}
 ?>
