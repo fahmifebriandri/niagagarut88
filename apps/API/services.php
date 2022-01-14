@@ -990,7 +990,7 @@ else if($action == "addProduk"){
 	$id_user_owner=($created_by == 1)?$id_user:$created_by;
 	
 	$data_produk = $request['data_produk'];
-	$id_produk = db_insert("INSERT INTO `tb_produk` SET
+	$query = "INSERT INTO `tb_produk` SET
 								id_suplier = '".((isset($data_produk['id_suplier']))?$data_produk['id_suplier']:"")."',
 								pengirim_produk = '".@$data_produk['pengirim_produk']."',
 								nama_barang = '".$data_produk['nama_barang']."',
@@ -1002,7 +1002,9 @@ else if($action == "addProduk"){
 								aktif = '".$data_produk['aktif']."',
 								id_user_owner = '".$id_user_owner."',
 								created_by = '".$id_user."'
-					;");
+					;";
+	echo $query; die();
+	$id_produk = db_insert($query);
 	if(is_numeric($id_produk) and count($data_produk['data_varian']) >0 ){
 		foreach($data_produk['data_varian'] as $varian){
 			if(@$data_produk['stat_varian'] !== true){
