@@ -230,6 +230,7 @@ else if($action == "loadProdukLimit"){
 											AND a.pengirim_produk = 'pribadi'
 											AND a.hapus = '0' 
 											AND a.id_user_owner = '".$id_user_owner."' 
+											AND b.stat_hanya_foto = '0' 
 											AND b.stok <= ".$min_stok."
 						");
 	echo json_encode($result);
