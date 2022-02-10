@@ -2732,7 +2732,15 @@ app.controller('ctrlProduk', function($rootScope,$scope,$location,$http){
         $scope.data_form_produk.data_varian.push({stok_status:'tersedia', harga_jual:$scope.data_form_produk.harga, diskon:$scope.data_form_produk.diskon});
 	}
 	$scope.changeStatHanyaFoto = function(indx){
-		console.log($scope.data_form_produk.data_varian[indx].stat_hanya_foto);
+		var stat = $scope.data_form_produk.data_varian[indx].stat_hanya_foto;
+		if(stat){
+			$scope.data_form_produk.data_varian[indx].berat = 0;
+			$scope.data_form_produk.data_varian[indx].harga_beli = 0;
+			$scope.data_form_produk.data_varian[indx].harga_jual = 0;
+			$scope.data_form_produk.data_varian[indx].diskon = 0;
+			$scope.data_form_produk.data_varian[indx].nama_varian = 0;
+			$scope.data_form_produk.data_varian[indx].stok = 0;
+		}
 	}
     $scope.deleteVarian = function(obj){
         var oldVarian = $scope.data_form_produk.data_varian;
