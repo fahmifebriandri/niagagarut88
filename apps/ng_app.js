@@ -2915,6 +2915,7 @@ app.controller('ctrlProduk', function($rootScope,$scope,$location,$http){
 		$scope.data_form_produk.harga = 0;
 		$scope.data_form_produk.diskon = 0;
 		$scope.data_form_produk.stat_varian = ($scope.data_form_produk.stat_varian == "1")?true:false;
+		$scope.data_form_produk.stat_habis = ($scope.data_form_produk.stat_habis == "1")?true:false;
 		$scope.data_form_produk.grosir_qty = ($scope.data_form_produk.stat_grosir_qty == "1")?true:false;
 		for(i in $scope.data_form_produk.data_varian){
 			$scope.data_form_produk.data_varian[i].berat = parseInt($scope.data_form_produk.data_varian[i].berat);

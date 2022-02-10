@@ -999,6 +999,7 @@ else if($action == "addProduk"){
 								id_kategori = '".$data_produk['id_kategori']."',
 								deskripsi = '".$data_produk['deskripsi']."',
 								stat_varian = '".((@$data_produk['stat_varian'] === true)?1:0)."',
+								stat_habis = '".((@$data_produk['stat_habis'] === true)?1:0)."',
 								stat_grosir_qty = '".((@$data_produk['grosir_qty'] === true)?1:0)."',
 								aktif = '".$data_produk['aktif']."',
 								id_user_owner = '".$id_user_owner."',
@@ -1079,6 +1080,7 @@ else if($action == "updateProduk"){
 											id_kategori = '".$data_produk['id_kategori']."',
 											deskripsi = '".$data_produk['deskripsi']."',
 											stat_varian = '".((@$data_produk['stat_varian'] === true)?1:0)."',
+											stat_habis = '".((@$data_produk['stat_habis'] === true)?1:0)."',
 											stat_grosir_qty = '".((@$data_produk['grosir_qty'] === true)?1:0)."',
 											aktif = '".$data_produk['aktif']."',
 											updated_by = '".$id_user."'
