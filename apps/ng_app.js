@@ -2731,6 +2731,9 @@ app.controller('ctrlProduk', function($rootScope,$scope,$location,$http){
 	$scope.addVarian = function(){
         $scope.data_form_produk.data_varian.push({stok_status:'tersedia', harga_jual:$scope.data_form_produk.harga, diskon:$scope.data_form_produk.diskon});
 	}
+	$scope.changeStatHanyaFoto = function(indx){
+		console.log($scope.data_form_produk.data_varian[indx].stat_hanya_foto);
+	}
     $scope.deleteVarian = function(obj){
         var oldVarian = $scope.data_form_produk.data_varian;
 		if(oldVarian.length < 2){
