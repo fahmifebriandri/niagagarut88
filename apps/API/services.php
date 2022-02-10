@@ -1030,6 +1030,7 @@ else if($action == "addProduk"){
 			$id_produk_varian = db_insert("INSERT INTO `tb_produk_varian` SET
 												id_produk = '".$id_produk."',
 												foto = '".$foto_name."',
+												stat_hanya_foto = '".((@$varian['stat_hanya_foto'] === true)?1:0)."',
 												berat = '".$varian['berat']."',
 												harga_beli = '".$varian['harga_beli']."',
 												harga_jual = '".$varian['harga_jual']."',
@@ -1112,6 +1113,7 @@ else if($action == "updateProduk"){
 			$id_produk_varian = db_insert("INSERT INTO `tb_produk_varian` SET
 												id_produk = '".$id_produk."',
 												foto = '".$foto_name."',
+												stat_hanya_foto = '".((@$varian['stat_hanya_foto'] === true)?1:0)."',
 												berat = '".$varian['berat']."',
 												harga_beli = '".$varian['harga_beli']."',
 												harga_jual = '".$varian['harga_jual']."',
