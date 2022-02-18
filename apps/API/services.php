@@ -974,6 +974,7 @@ else if($action == "loadDataProduk"){
 								GROUP BY a.`id`
 								ORDER BY a.`id` DESC
 								;");
+	
 	foreach($res['data'] as $key => $val){
 		$data_varian = db_select("SELECT * FROM `tb_produk_varian` WHERE id_produk = '".$val['id_produk']."'; ");
 		$res['data'][$key]['data_varian'] = $data_varian['data'];
@@ -981,7 +982,14 @@ else if($action == "loadDataProduk"){
 		$data_grosir = db_select("SELECT * FROM `tb_produk_grosir` WHERE id_produk = '".$val['id_produk']."'; ");
 		$res['data'][$key]['data_grosir'] = $data_grosir['data'];
 		
+		foreach($res['data'][$key] as $key1 => $val1){
+			if(is_string($val1)){
+				$res['data'][$key][$key1] = utf8_encode($val1);
+			}
+		}
+		
 	}
+	
 	echo json_encode($res);
 }
 else if($action == "addProduk"){
