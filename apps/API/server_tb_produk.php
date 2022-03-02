@@ -3,20 +3,8 @@ require_once("config.php");
 require_once("library_function.php");
 require_once( 'ssp.class.php' );
 
-$table = <<<EOT
- (
-	SELECT a.*, b.kode as kode_kategori, b.nama as nama_kategori, c.*, d.nama as nama_suplier 
-		FROM `tb_produk` a
-		LEFT JOIN tb_kategori b ON b.id = a.id_kategori
-		LEFT JOIN tb_produk_varian c ON c.id_produk = a.id
-		LEFT JOIN tb_suplier d ON d.id = a.id_suplier
-		WHERE 
-			a.hapus='0' 
-			and a.id_user_owner = '101' 
-		GROUP BY a.`id`
-		ORDER BY a.`id` DESC
- ) temp
-EOT;
+$table = 'vw_xdel_tmp';
+
 
 $primaryKey = 'id';
 

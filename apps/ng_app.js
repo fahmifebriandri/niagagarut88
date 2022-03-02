@@ -2836,6 +2836,7 @@ app.controller('ctrlProduk', function($rootScope,$scope,$location,$http){
 			data: $.param({data_param:encObjParam(data_param)}),
 			beforeSend: function() {
 				//modal.show()
+				openLoadingLoadApp();
 			},
 			complete: function(response) {
 				var response = response.data;
@@ -2849,6 +2850,7 @@ app.controller('ctrlProduk', function($rootScope,$scope,$location,$http){
 				//angular.element(document).ready(function(){});
 				setTimeout(function(){
 					$scope.datatables = angular.element(document.querySelector('.table#dataTableProduk')).DataTable({destroy: true});
+					closeLoadingLoadApp();
 				}, 1000);
 			}
 		});		
