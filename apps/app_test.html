@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>App Test</title>
+	<link rel="stylesheet" type="text/css" href=".\assets\sb-admin-2\vendor\datatables\DataTables-1.10.20\css\jquery.dataTables.min.css"/>
+	
+	<script type="text/javascript" src=".\assets\sb-admin-2\vendor\jquery\jquery.min.js"></script>
+	<script type="text/javascript" src=".\assets\sb-admin-2\vendor\datatables\DataTables-1.10.20\js\jquery.dataTables.min.js"></script>
+			  
+</head>
+<body>
+
+<table id="view_tb_produk" class="display" style="width:100%">
+	<thead>
+		<tr>
+			<th>No</th>
+			<th>Nama Produk</th>
+			<th>Kategori</th>
+			<th>Sumber Stok</th>
+			<th>Nama Suplier</th>
+			<th>Pengirim Produk</th>
+			<th>Stok</th>
+			<th>Harga Beli</th>
+			<th>Harga Jual</th>
+			<th>Diskon</th>
+			<th>Grosir</th>
+			<th>Aksi</th>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<th>No</th>
+			<th>Nama Produk</th>
+			<th>Kategori</th>
+			<th>Sumber Stok</th>
+			<th>Nama Suplier</th>
+			<th>Pengirim Produk</th>
+			<th>Stok</th>
+			<th>Harga Beli</th>
+			<th>Harga Jual</th>
+			<th>Diskon</th>
+			<th>Grosir</th>
+			<th>Aksi</th>
+		</tr>
+	</tfoot>
+</table>
+	
+<script>
+$(document).ready(function() {
+    $('#view_tb_produk').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": ".\API\server_tb_produk.php",
+            "data": function ( d ) {
+                d.param = "my_param";
+                // d.custom = $('#myInput').val();
+                // etc
+            }
+        }
+    } );
+	/*
+    var t = $('#example').DataTable( {
+		"processing": true,
+		"serverSide": true,
+		"ajax": "./server_processing.php",
+        "columnDefs": [ {
+            "searchable": false,
+            "orderable": false,
+            "targets": 0
+        } ],
+        "order": [[ 1, 'asc' ]]
+    } );
+ 
+    t.on( 'order.dt search.dt', function () {
+        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+            //cell.innerHTML = i+1;
+        } );
+    } ).draw();
+	*/
+} );
+</script>
+</body>
+</html>
+
+
