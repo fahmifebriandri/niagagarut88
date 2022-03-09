@@ -1877,8 +1877,6 @@ app.controller('ctrlKurir', function($rootScope,$scope,$location,$http){
 		//console.log(data_kurir);
 		$scope.data_form_kurir = {}
 		$scope.data_form_kurir.action = 'addKurir';
-		$scope.data_form_kurir.diskon = 0; 
-		$scope.data_form_kurir.tipe_diskon = 'persen'; 
 		$scope.data_form_kurir.aktif = '1';
 		angular.element(document.querySelector('#modalFormKurir')).modal('show');
 	}
@@ -1886,7 +1884,6 @@ app.controller('ctrlKurir', function($rootScope,$scope,$location,$http){
 		//console.log(data_kurir);
 		$scope.data_form_kurir = data_kurir;
 		$scope.data_form_kurir.action = "updateKurir";
-		$scope.data_form_kurir.diskon = parseInt($scope.data_form_kurir.diskon);
 		angular.element(document.querySelector('#modalFormKurir')).modal('show');
 	}
 	$scope.deleteKurir = function (id_kurir) {
