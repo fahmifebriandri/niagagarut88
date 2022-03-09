@@ -626,6 +626,82 @@ else if($action == "deleteMembership"){
 	}
 	echo json_encode($return);
 }
+else if($action == "loadDataKurir"){
+	$data_user = $request['data_user'];
+	$id_user = $data_user['id'];
+	$created_by = $data_user['created_by'];
+	$id_user_owner=($created_by == 1)?$id_user:$created_by;
+	$res = array();
+	$res = db_select("SELECT * FROM `tb_kurir` where hapus='0' and id_user_owner = '".$id_user_owner."' ORDER BY `id` DESC;");
+	echo json_encode($res);
+}
+else if($action == "addKurir"){
+	$data_user = $request['data_user'];
+	$id_user = $data_user['id'];
+	$created_by = $data_user['created_by'];
+	$id_user_owner=($created_by == 1)?$id_user:$created_by;
+	
+	$data_kurir = $request['data_kurir'];
+	$res = db_select("SELECT nama FROM `tb_kurir` where hapus='0' and nama = '".$data_kurir['nama']."' and id_user_owner = '".$id_user_owner."' ;")['data'];
+
+	if($res > 0){
+		$return['result'] = $data_kurir['nama']." : ".count($res);
+		$return['message'] = "Nama sudah terdaftar!";
+	}else{
+		$result = db_insert("INSERT INTO `tb_kurir` SET
+							nama = '".$data_kurir['nama']."',
+							diskon = '".$data_kurir['diskon']."',
+							tipe_diskon = '".$data_kurir['tipe_diskon']."',
+							aktif = '".$data_kurir['aktif']."',
+							id_user_owner = '".$id_user_owner."',
+							created_by = '".$id_user."'
+						;");
+		
+		$return['result'] = $result;
+		$return['message'] = "Anda berhasil menambah kurir!";
+	}
+	echo json_encode($return);
+}
+else if($action == "updateKurir"){
+	$data_user = $request['data_user'];
+	$id_user = $data_user['id'];
+	$created_by = $data_user['created_by'];
+	$id_user_owner=($created_by == 1)?$id_user:$created_by;
+	
+	$data_kurir = $request['data_kurir'];
+	$res = db_select("SELECT nama FROM `tb_kurir` where hapus='0' and nama = '".$data_kurir['nama']."' AND id_user_owner = '".$id_user_owner."' AND id != '".$data_kurir['id']."' ;")['data'];
+	if($res > 0){
+		$return['result'] = $data_kurir['nama']." : ".count($res);
+		$return['message'] = "Nama sudah terdaftar!";
+	}else{
+		$result = db_exec("UPDATE `tb_kurir` SET 
+												nama = '".$data_kurir['nama']."',
+												diskon = '".$data_kurir['diskon']."',
+												tipe_diskon = '".$data_kurir['tipe_diskon']."',
+												aktif = '".$data_kurir['aktif']."',
+												updated_by = '".$id_user."'
+											WHERE
+												id = '".$data_kurir['id']."'
+											;");
+		$return['result'] = $result;
+		$return['message'] = "Anda berhasil update kurir!";
+	}
+	echo json_encode($return);
+}
+else if($action == "deleteKurir"){
+	$id_kurir = $request['id_kurir'];
+	$count = db_select("SELECT COUNT(id) count FROM `tb_customer` WHERE hapus = '0' and id_kurir = '".$id_kurir."';")['data'][0]['count'];
+	if($count == 0){
+		db_exec("UPDATE `tb_kurir` SET hapus='1'  where id = '".$id_kurir."' ;");
+		$return['result'] = "1";
+		$return['message'] = "";
+	}else{
+		$return['result'] = "1";
+		$return['message'] = "(".$count.") user sedang menggunakan, Kurir ini tidak bisa dihapus!"
+							."\n\n(*) Jika anda ingin menghapus, pastikan tidak ada user yang menggunakan Kurir ini!";
+	}
+	echo json_encode($return);
+}
 else if($action == "getCustomerByName"){
 	$data_user = $request['data_user'];
 	$id_user = $data_user['id'];

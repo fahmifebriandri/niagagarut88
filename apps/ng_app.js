@@ -80,6 +80,10 @@ app.config(function($routeProvider, $httpProvider){
 		templateUrl : "./view/m-customer.html?n="+Math.floor(Math.random() * 1000000000000000),
 		controller : "ctrlCustomer"
 	})
+	.when("/kurir", {
+		templateUrl : "./view/m-kurir.html?n="+Math.floor(Math.random() * 1000000000000000),
+		controller : "ctrlKurir"
+	})
 	.when("/analysist", {
 		templateUrl : "./view/m-analysist.html?n="+Math.floor(Math.random() * 1000000000000000),
 		controller : "ctrlAnalysist"
@@ -1811,6 +1815,104 @@ app.controller('ctrlCustomer', function($rootScope,$scope,$location,$http){
 		$scope.loadDataCustomer();
 		$scope.loadDataMembership();
 		$scope.loadDataPropinsi();
+	}
+	$scope.initLoad();
+});
+app.controller('ctrlKurir', function($rootScope,$scope,$location,$http){
+	$scope.indexInitLoad();
+	$scope.breadcrumb = '<li class="breadcrumb-item"><a href="#!/kurir">Kurir</a></li>'+
+						'<li class="breadcrumb-item active" aria-current="page">Input</li>';
+	$scope.data_table_kurir = {};
+	$scope.data_form_kurir = {};
+	$scope.loadDataKurir = function () {
+		var data_param = {};
+			data_param['action'] = "loadDataKurir";
+			data_param['data_user'] = $rootScope.session_user;
+		$http({
+			method: 'POST',
+			url: BASE_URL + 'API/services.php',
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			data: $.param({data_param:encObjParam(data_param)}),
+			beforeSend: function() {
+				//modal.show()
+			},
+			complete: function(response) {
+				var response = response.data;
+				//console.log(typeof(response.data));
+				//console.log(response);
+				if(typeof(response.data) == "object"){
+					$scope.data_table_kurir = response.data;
+				}else{
+					$scope.data_table_kurir = {};
+				}
+			}
+		});		
+	}
+	$scope.submitFormKurir = function () {
+		var data_param = {};
+			data_param['action'] = ($scope.data_form_kurir.action)?$scope.data_form_kurir.action:"addKurir";
+			data_param['data_user'] = $rootScope.session_user;
+			data_param['data_kurir'] = $scope.data_form_kurir;
+			//console.log(data_param);
+		$http({
+			method: 'POST',
+			url: BASE_URL + 'API/services.php',
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			data: $.param({data_param:encObjParam(data_param)}),
+			beforeSend: function() {
+				//modal.show()
+			},
+			complete: function(response) {
+				var response = response.data;
+				if(response.message != "") alert(response.message);
+				if(response.message != "Nama sudah terdaftar!"){
+					$scope.data_form_kurir = {};
+					angular.element(document.querySelector('#modalFormKurir')).modal('hide');
+				}
+				$scope.loadDataKurir();
+			}
+		});
+	}
+	$scope.addKurir = function () {
+		//console.log(data_kurir);
+		$scope.data_form_kurir = {}
+		$scope.data_form_kurir.action = 'addKurir';
+		$scope.data_form_kurir.diskon = 0; 
+		$scope.data_form_kurir.tipe_diskon = 'persen'; 
+		$scope.data_form_kurir.aktif = '1';
+		angular.element(document.querySelector('#modalFormKurir')).modal('show');
+	}
+	$scope.updateKurir = function (data_kurir) {
+		//console.log(data_kurir);
+		$scope.data_form_kurir = data_kurir;
+		$scope.data_form_kurir.action = "updateKurir";
+		$scope.data_form_kurir.diskon = parseInt($scope.data_form_kurir.diskon);
+		angular.element(document.querySelector('#modalFormKurir')).modal('show');
+	}
+	$scope.deleteKurir = function (id_kurir) {
+		var c = confirm("Anda akan menghapus Kurir ini?");
+		if(c){
+			var data_param = {};
+				data_param['action'] = "deleteKurir";
+				data_param['id_kurir'] = id_kurir;
+			$http({
+				method: 'POST',
+				url: BASE_URL + 'API/services.php',
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				data: $.param({data_param:encObjParam(data_param)}),
+				beforeSend: function() {
+					//modal.show()
+				},
+				complete: function(response) {
+					var response = response.data;
+					$scope.loadDataKurir();
+					if(response.message != "") alert(response.message);
+				}
+			});
+		}
+	}
+	$scope.initLoad = function () {
+		$scope.loadDataKurir();
 	}
 	$scope.initLoad();
 });
