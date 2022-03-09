@@ -16,6 +16,11 @@ if($action == "get_home_data"){
 	$res['kategori'] = db_select("SELECT * FROM `tb_kategori` WHERE hapus = '0' and id_user_owner = ".$id_user_owner." ORDER BY `tb_kategori`.`nama` ASC;");
 	echo json_encode($res);
 }
+else if($action == "loadDataKurir"){
+	$res = array();
+	$res = db_select("SELECT * FROM `tb_kurir` WHERE hapus = '0' and id_user_owner = ".$id_user_owner." ORDER BY `tb_kurir`.`nama` ASC;");
+	echo json_encode($res);
+}
 else if($action == "loadDataPropinsi"){
 	$res = array();
 	$res = db_select("SELECT DISTINCT(provinsi) as provinsi FROM `tb_wilayah` 
