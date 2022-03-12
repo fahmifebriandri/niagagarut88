@@ -561,8 +561,25 @@ app.controller('ctrlIndex', function($rootScope,$scope,$location,$http,$window){
 				mywindow.document.write('<link rel="stylesheet" href="./assets/sb-admin-2/vendor/fontawesome-free/css/all.min.css" type="text/css" />');
 				mywindow.document.write('<link rel="stylesheet" href="./assets/font-awesome-4.7.0/css/font-awesome.min.css" type="text/css" />');
 				mywindow.document.write('<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway+Dots&display=swap">');
-				mywindow.document.write('<style>@font-face{ font-family:Dotmatri; src: url(./assets/fonts/DOTMATRI.TTF); } @font-face{ font-family:DotmatriBold; src: url(./assets/fonts/DOTMBold.TTF); }</style>');
-				
+				mywindow.document.write('<style>@font-face{ font-family:Dotmatri; src: url(./assets/fonts/DOTMATRI.TTF); }@font-face{ font-family:DotmatriBold; src: url(./assets/fonts/DOTMBold.TTF); }@font-face{ font-family:AnonymousPro; src: url(./assets/fonts/AnonymousPro-Regular.ttf); }@font-face{ font-family:ArchivoNarrow; src: url(./assets/fonts/ArchivoNarrow-Regular.ttf); }@font-face{ font-family:Inconsolata; src: url(./assets/fonts/Inconsolata-Regular.ttf); }@font-face{ font-family:Inter; src: url(./assets/fonts/Inter-Regular.ttf); }@font-face{ font-family:Lato; src: url(./assets/fonts/Lato-Regular.ttf); }@font-face{ font-family:OpenSans; src: url(./assets/fonts/OpenSans-Regular.ttf); }@font-face{ font-family:RalewayDots; src: url(./assets/fonts/RalewayDots-Regular.ttf); }@font-face{ font-family:Roboto; src: url(./assets/fonts/Roboto-Regular.ttf); }@font-face{ font-family:Rubik; src: url(./assets/fonts/Rubik-Regular.ttf); }@font-face{ font-family:Sora; src: url(./assets/fonts/Sora-Regular.ttf); }@font-face{ font-family:SpaceMono; src: url(./assets/fonts/SpaceMono-Regular.ttf); }@font-face{ font-family:Ubuntu; src: url(./assets/fonts/Ubuntu-Regular.ttf); }@font-face{ font-family:WorkSans; src: url(./assets/fonts/WorkSans-Regular.ttf); }</style>');
+				/*
+					Dotmatri
+					DotmatriBold
+					AnonymousPro
+					ArchivoNarrow
+					FiraSans
+					Inconsolata
+					Inter
+					Lato
+					OpenSans
+					RalewayDots
+					Roboto
+					Rubik
+					Sora
+					SpaceMono
+					Ubuntu
+					WorkSans
+				*/
 				mywindow.document.write('</head><body>');
 				mywindow.document.write(dataHTML);
 				mywindow.document.write('</body></html>');
