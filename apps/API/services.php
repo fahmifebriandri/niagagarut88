@@ -290,6 +290,7 @@ else if($action == "updateProfileToko"){
 											print_border='".$data_profile['print_border']."', 
 											print_margin_left='".$data_profile['print_margin_left']."', 
 											print_font_size='".$data_profile['print_font_size']."', 
+											print_font='".$data_profile['print_font']."', 
 											updated_by='".$id_user."' 
 										  WHERE 
 											id_user_owner = '".$id_user_owner."' 
@@ -315,6 +316,7 @@ else if($action == "updateProfileToko"){
 							print_border='".$data_profile['print_border']."', 
 							print_margin_left='".$data_profile['print_margin_left']."', 
 							print_font_size='".$data_profile['print_font_size']."', 
+							print_font='".$data_profile['print_font']."', 
 							created_by = '".$id_user."'
 							
 						;");
