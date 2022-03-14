@@ -1429,16 +1429,21 @@ else if($action == "loadDataOrderForPrint"){
 	foreach($id_order_arr as $id_order){
 		$subRes = array();
 		$subRes['tb_profile_toko'] = $query_profile_toko;
-		$sql = "SELECT * FROM `tb_order` where id = '".$id_order."' ORDER BY id ASC;";
+		$sql = "SELECT a.*, b.no_telepon_customer FROM tb_order.a LEFT JOIN tb_customer b ON b.id = a.id_customer where a.id = '".$id_order."' ORDER BY a.id ASC;";
 		$subRes['tb_order'] = db_select($sql)['data'];
+		
 		$sql = "SELECT * FROM `tb_order_cart` where id_order = '".$id_order."' ORDER BY id ASC;";
 		$subRes['tb_order_cart'] = db_select($sql)['data'];
+		
 		$sql = "SELECT * FROM `tb_order_cart_grosir` where id_order = '".$id_order."' ORDER BY id ASC;";
 		$subRes['tb_order_cart_grosir'] = db_select($sql)['data'];
+		
 		$sql = "SELECT * FROM `tb_order_customer` where id_order = '".$id_order."' ORDER BY id ASC;";
 		$subRes['tb_order_customer'] = db_select($sql)['data'];
+		
 		$sql = "SELECT * FROM `tb_order_suplier` where id_order = '".$id_order."' ORDER BY id ASC;";
 		$subRes['tb_order_suplier'] = db_select($sql)['data'];
+		
 		$res[] = $subRes;
 	}
 	echo json_encode($res);

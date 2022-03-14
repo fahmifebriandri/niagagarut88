@@ -543,6 +543,7 @@ app.controller('ctrlIndex', function($rootScope,$scope,$location,$http,$window){
 							dataHTML += `<br />Nama Penerima: `+tb_order.nama_pemesan_dropship+` `;
 							dataHTML += `<br />Alamat: `+tb_order.alamat_tujuan_dropship+` `;
 						}
+							dataHTML += `<br />No Telepon: `+tb_order.no_telepon_customer+` `; //no ini di ambil dari no telepon customer yang terdaftar dari aplikasi
 					}
 					
 					if(tb_order.keterangan != "-" && tb_order.keterangan != ""){
