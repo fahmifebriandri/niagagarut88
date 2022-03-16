@@ -104,6 +104,10 @@ app.config(function($routeProvider, $httpProvider){
 		templateUrl : "./view/m-produk.html?n="+Math.floor(Math.random() * 1000000000000000),
 		controller : "ctrlProduk"
 	})
+	.when("/produk-pager", {
+		templateUrl : "./view/m-produk-pager.html?n="+Math.floor(Math.random() * 1000000000000000),
+		controller : "ctrlProdukPager"
+	})
 	.when("/order", {
 		templateUrl : "./view/m-order.html?n="+Math.floor(Math.random() * 1000000000000000),
 		controller : "ctrlOrder"
@@ -3132,6 +3136,352 @@ app.controller('ctrlProduk', function($rootScope,$scope,$location,$http){
 	}
 	$scope.initLoad();
 });
+app.controller('ctrlProdukPager', function($rootScope,$scope,$location,$http){
+	$scope.indexInitLoad();
+	$scope.breadcrumb = '<li class="breadcrumb-item"><a href="#!/produk">Produk</a></li>'+
+						'<li class="breadcrumb-item active" aria-current="page">Input</li>';
+
+	$scope.datatables = null;
+	$scope.data_table_produk = {};
+	$scope.data_form_produk = {};
+	$scope.data_form_produk.data_varian = [];
+	$scope.data_form_produk.data_grosir = [];
+	$scope.data_filter = {};
+	$scope.data_table_kategori = {};
+	$scope.data_table_suplier = [];
+	$scope.data_produk_nama_barang = [];
+	
+	$scope.cekNamaBarang = function(){
+		var nama_barang = $scope.data_form_produk.nama_barang;
+		if( typeof(nama_barang) != 'undefined' && nama_barang != "" && nama_barang.length > 2){
+			var data_param = {};
+				data_param['action'] = "cekProdukNamaBarang";
+				data_param['data_user'] = $rootScope.session_user;
+				data_param['data_filter'] = {nama_barang:nama_barang, aktif:'1'};
+			$http({
+				method: 'POST',
+				url: BASE_URL + 'API/services.php',
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				data: $.param({data_param:encObjParam(data_param)}),
+				beforeSend: function() {
+					//modal.show()
+				},
+				complete: function(response) {
+					var response = response.data;
+					//console.log(typeof(response.data));
+					//console.log(response);
+					if(typeof(response.data) == "object"){
+						$scope.data_produk_nama_barang = response.data;
+					}else{
+						$scope.data_produk_nama_barang = [];
+					}
+				}
+			});
+		}else{
+			$scope.data_produk_nama_barang = [];
+		}
+	}
+	$scope.setHargaVarian = function(){
+		var harga = $scope.data_form_produk.harga;
+		var data_varian = $scope.data_form_produk.data_varian;
+		for(var i in data_varian){
+			$scope.data_form_produk.data_varian[i].harga_jual = harga;
+		}
+	}
+	$scope.setDiskonVarian = function(){
+		var diskon = $scope.data_form_produk.diskon;
+		var data_varian = $scope.data_form_produk.data_varian;
+		for(var i in data_varian){
+			$scope.data_form_produk.data_varian[i].diskon = diskon;
+		}
+	}
+	$scope.addVarian = function(){
+        $scope.data_form_produk.data_varian.push({stok_status:'tersedia', harga_jual:$scope.data_form_produk.harga, diskon:$scope.data_form_produk.diskon});
+	}
+	$scope.changeStatHanyaFoto = function(indx){
+		var stat = $scope.data_form_produk.data_varian[indx].stat_hanya_foto;
+		if(stat){
+			$scope.data_form_produk.data_varian[indx].berat = 0;
+			$scope.data_form_produk.data_varian[indx].harga_beli = 0;
+			$scope.data_form_produk.data_varian[indx].harga_jual = 0;
+			$scope.data_form_produk.data_varian[indx].diskon = 0;
+			$scope.data_form_produk.data_varian[indx].nama_varian = 0;
+			$scope.data_form_produk.data_varian[indx].stok = 0;
+		}
+	}
+    $scope.deleteVarian = function(obj){
+        var oldVarian = $scope.data_form_produk.data_varian;
+		if(oldVarian.length < 2){
+			alert("Minimal harus ada 1 foto produk!");
+		}else{
+			$scope.data_form_produk.data_varian = [];
+			angular.forEach(oldVarian, function(x) {
+				if (x.$$hashKey != obj.$$hashKey) $scope.data_form_produk.data_varian.push(x);
+			});
+		}
+    };
+	$scope.getFileFoto = function(obj){
+		var indx = $(obj).data('index');
+		var file = obj.files[0];
+		var reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload = function () {
+			var fileEncData = reader.result;
+			angular.element(document.querySelector("#modalFormProduk img.display_foto_"+indx)).attr("src",fileEncData);
+			$scope.data_form_produk.data_varian[indx].foto_file = fileEncData;
+		};
+		reader.onerror = function (error) {
+			console.log('Error: ', error);
+		};
+	}
+	$scope.loadDataKategori = function () {
+		var data_param = {};
+			data_param['action'] = "loadDataKategori";
+			data_param['data_user'] = $rootScope.session_user;
+			data_param['data_filter'] = {aktif:'1'};
+		$http({
+			method: 'POST',
+			url: BASE_URL + 'API/services.php',
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			data: $.param({data_param:encObjParam(data_param)}),
+			beforeSend: function() {
+				//modal.show()
+			},
+			complete: function(response) {
+				var response = response.data;
+				//console.log(typeof(response.data));
+				//console.log(response);
+				if(typeof(response.data) == "object"){
+					$scope.data_table_kategori = response.data;
+				}else{
+					$scope.data_table_kategori = {};
+				}
+			}
+		});
+	}
+	$scope.loadDataSuplier = function () {
+		var data_param = {};
+			data_param['action'] = "loadDataSuplier";
+			data_param['data_user'] = $rootScope.session_user;
+		$http({
+			method: 'POST',
+			url: BASE_URL + 'API/services.php',
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			data: $.param({data_param:encObjParam(data_param)}),
+			beforeSend: function() {
+				//modal.show()
+			},
+			complete: function(response) {
+				var response = response.data;
+				//console.log(typeof(response.data));
+				//console.log(response);
+				if(typeof(response.data) == "object"){
+					$scope.data_table_suplier = response.data;
+				}else{
+					$scope.data_table_suplier = {};
+				}
+			}
+		});		
+	}
+	$scope.loadFilterData = function () {
+		$scope.loadDataProduk($scope.data_filter);
+	}
+	$scope.loadDataProduk = function (data_filter = null) {
+		if($scope.datatables !== null){
+			$scope.datatables.destroy();
+			$scope.datatables = null;
+		}
+		var data_param = {};
+			data_param['action'] = "loadDataProduk";
+			data_param['data_user'] = $rootScope.session_user;
+			data_param['data_filter'] = data_filter;
+			//console.log(data_param);
+		$http({
+			method: 'POST',
+			url: BASE_URL + 'API/services.php',
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			data: $.param({data_param:encObjParam(data_param)}),
+			beforeSend: function() {
+				//modal.show()
+				openLoadingLoadApp();
+			},
+			complete: function(response) {
+				var response = response.data;
+				//console.log(typeof(response.data));
+				//console.log(response);
+				if(typeof(response.data) == "object"){
+					$scope.data_table_produk = response.data;
+				}else{
+					$scope.data_table_produk = {};
+				}
+				//angular.element(document).ready(function(){});
+				setTimeout(function(){
+					$scope.datatables = angular.element(document.querySelector('.table#dataTableProduk')).DataTable({destroy: true});
+					closeLoadingLoadApp();
+				}, 1000);
+			}
+		});		
+	}
+	$scope.changeSuplier = function () {
+		var id_suplier = $scope.data_form_produk.id_suplier;
+		var data_table_suplier = $scope.data_table_suplier;
+		$scope.data_form_produk.diskon = 0;
+		$scope.data_form_produk.diskon_tipe = 'persen';
+		for(i in data_table_suplier){
+			let row = data_table_suplier[i];
+			if(row.id == id_suplier){
+				$scope.data_form_produk.diskon = parseInt(row.diskon);
+				$scope.data_form_produk.diskon_tipe = row.tipe_diskon;
+			}
+		}
+		$scope.setDiskonVarian();
+	}
+	$scope.submitFormProduk = function () {
+		var data_param = {};
+			data_param['action'] = ($scope.data_form_produk.action)?$scope.data_form_produk.action:"addProduk";
+			data_param['data_user'] = $rootScope.session_user;
+			data_param['data_produk'] = $scope.data_form_produk;
+			//console.log(JSON.stringify(data_param));
+		
+		$http({
+			method: 'POST',
+			url: BASE_URL + 'API/services.php',
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			data: $.param({data_param:encObjParam(data_param)}),
+			beforeSend: function() {
+				//modal.show()
+			},
+			complete: function(response) {
+				var response = response.data;
+				if(response.message != "") alert(response.message);
+				if(response.message != "Nama sudah terdaftar!"){
+					$scope.data_form_produk = {};
+					angular.element(document.querySelector('#modalFormProduk')).modal('hide');
+				}
+				$scope.loadDataProduk();
+			}
+		});
+		
+	}
+	$scope.addProduk = function () {
+		//console.log(data_produk);
+		$scope.data_form_produk = {}
+		$scope.data_form_produk.action = 'addProduk';
+		$scope.data_form_produk.aktif = '1';
+		$scope.data_form_produk.tanggal = new Date();
+		$scope.data_form_produk.harga = 0;
+		$scope.data_form_produk.diskon = 0;
+		$scope.data_form_produk.diskon_tipe = 'persen';
+		$scope.data_form_produk.data_varian = [{stok_status:'tersedia', harga_jual:0, diskon:0}];
+		$scope.data_form_produk.data_grosir = [{},{},{},{},{}];
+		//bagian ini di buat otomatis pribadi karena belum dibutuhkan pengiriman suplier
+		$scope.data_form_produk.sumber_stok = 'pribadi';
+		$scope.data_form_produk.id_suplier = "";
+		$scope.data_form_produk.pengirim_produk = "pribadi";
+
+		angular.element(document.querySelector("#modalFormProduk")).on('shown.bs.modal', function (e) {
+			setTimeout(function(){
+				angular.element(document.querySelector("#modalFormProduk img")).attr("src","data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22200%22%20height%3D%22200%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20200%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_16ba5f6da00%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A10pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_16ba5f6da00%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2274.421875%22%20y%3D%22104.5%22%3ENone%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+			}, 300);
+		});
+		angular.element(document.querySelector('#modalFormProduk')).modal('show');
+	}
+	$scope.updateProduk = function (data_produk) {
+		//console.log(data_produk);
+		/**/
+		$scope.data_form_produk = data_produk;
+		$scope.data_form_produk.action = "updateProduk";
+		//$scope.data_form_produk.tanggal = new Date($scope.data_form_produk.tanggal);
+		$scope.data_form_produk.harga = 0;
+		$scope.data_form_produk.diskon = 0;
+		$scope.data_form_produk.stat_varian = ($scope.data_form_produk.stat_varian == "1")?true:false;
+		$scope.data_form_produk.stat_habis = ($scope.data_form_produk.stat_habis == "1")?true:false;
+		$scope.data_form_produk.grosir_qty = ($scope.data_form_produk.stat_grosir_qty == "1")?true:false;
+		for(i in $scope.data_form_produk.data_varian){
+			$scope.data_form_produk.data_varian[i].stat_hanya_foto = ($scope.data_form_produk.data_varian[i].stat_hanya_foto == "1")?true:false;
+			$scope.data_form_produk.data_varian[i].berat = parseInt($scope.data_form_produk.data_varian[i].berat);
+			$scope.data_form_produk.data_varian[i].harga_beli = parseInt($scope.data_form_produk.data_varian[i].harga_beli);
+			$scope.data_form_produk.data_varian[i].harga_jual = parseInt($scope.data_form_produk.data_varian[i].harga_jual);
+			$scope.data_form_produk.data_varian[i].diskon = parseInt($scope.data_form_produk.data_varian[i].diskon);
+			$scope.data_form_produk.data_varian[i].stok = parseInt($scope.data_form_produk.data_varian[i].stok);
+		}
+		//console.log($scope.data_form_produk.data_grosir);
+		for(i in $scope.data_form_produk.data_grosir){
+			$scope.data_form_produk.data_grosir[i].rentang_mulai = parseInt($scope.data_form_produk.data_grosir[i].qty_awal);
+			$scope.data_form_produk.data_grosir[i].rentang_akhir = parseInt($scope.data_form_produk.data_grosir[i].qty_akhir);
+			$scope.data_form_produk.data_grosir[i].harga_satuan = parseInt($scope.data_form_produk.data_grosir[i].harga_jual);
+		}
+		if($scope.data_form_produk.data_grosir == "0"){
+			$scope.data_form_produk.data_grosir = [{},{},{},{},{}];
+		}
+		let data_grosir_inc = (5-($scope.data_form_produk.data_grosir).length);
+		for(var i = 0; i<data_grosir_inc; i++){
+			$scope.data_form_produk.data_grosir.push({});
+		}
+		
+		angular.element(document.querySelector("#modalFormProduk")).on('shown.bs.modal', function (e) {
+			$empty_img = "data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22200%22%20height%3D%22200%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20200%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_16ba5f6da00%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A10pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_16ba5f6da00%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2274.421875%22%20y%3D%22104.5%22%3ENone%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E";
+			setTimeout(function(){
+				for(i in $scope.data_form_produk.data_varian){
+					$foto = $scope.data_form_produk.data_varian[i].foto;
+					if($foto != ""){
+						$foto = BASE_URL+"assets/upload/produk/display/"+$scope.data_form_produk.data_varian[i].foto;
+					}else{
+						$foto = $empty_img;
+					}
+					angular.element(document.querySelector("#modalFormProduk img.display_foto_"+i)).attr("src",$foto);
+				}
+			}, 300);
+		});
+		angular.element(document.querySelector('#modalFormProduk')).modal('show');
+	}
+	$scope.deleteProduk = function (id_produk) {
+		var c = confirm("Anda akan menghapus Produk ini?");
+		if(c){
+			var data_param = {};
+				data_param['action'] = "deleteProduk";
+				data_param['id_produk'] = id_produk;
+			$http({
+				method: 'POST',
+				url: BASE_URL + 'API/services.php',
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				data: $.param({data_param:encObjParam(data_param)}),
+				beforeSend: function() {
+					//modal.show()
+				},
+				complete: function(response) {
+					var response = response.data;
+					$scope.loadDataProduk();
+					if(response.message != "") alert(response.message);
+				}
+			});
+		}
+	}
+	$scope.sendJenisStok = function () {
+		var sumber_stok = $scope.data_form_produk.sumber_stok;
+		if(sumber_stok == "pribadi"){
+			$scope.data_form_produk.id_suplier = "";
+			$scope.data_form_produk.pengirim_produk = "pribadi";
+		}
+	}
+	$scope.initLoad = function () {
+		var x = new Date();
+		var Y = x.getFullYear();
+		var M = (x.getMonth() + 1);
+		
+		$scope.loadDataKategori();
+		$scope.loadDataSuplier();
+		$scope.loadFilterData();
+		/*
+		$scope.data_filter.date_type='by_month';
+		$scope.data_filter.bulan=(M).toString();
+		$scope.data_filter.tahun=(Y).toString();
+		$scope.data_filter.tanggal_mulai = x;
+		$scope.data_filter.tanggal_akhir = x;
+		*/
+	}
+	$scope.initLoad();
+});
 app.controller('ctrlOrder', function($rootScope,$scope,$location,$http){
 	$scope.indexInitLoad();
 	$scope.breadcrumb = '<li class="breadcrumb-item"><a href="#!/order">Order</a></li>'+
@@ -3177,7 +3527,7 @@ app.controller('ctrlOrder', function($rootScope,$scope,$location,$http){
 						res[i].diskon_member = parseInt(res[i].diskon_member);
 						res[i].diskon_order = parseInt(res[i].diskon_order);
 						res[i].total_ongkir = parseInt(res[i].total_ongkir);
-						res[i].list_nama_barang = "- " + (res[i].list_nama_barang).toString().replace(/\|/gi, '\n\r- ');
+						res[i].list_nama_barang = "- " + (((res[i].list_nama_barang) != null)?(res[i].list_nama_barang).toString().replace(/\|/gi, '\n\r- '):'');
 					}
 					$scope.data_table_order = res;
 				}else{
