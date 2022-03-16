@@ -3315,10 +3315,13 @@ app.controller('ctrlProdukPager', function($rootScope,$scope,$location,$http){
 					$scope.data_table_produk = {};
 				}
 				//angular.element(document).ready(function(){});
+				/*
 				setTimeout(function(){
 					$scope.datatables = angular.element(document.querySelector('.table#dataTableProduk')).DataTable({destroy: true});
 					closeLoadingLoadApp();
 				}, 1000);
+				*/
+				closeLoadingLoadApp();
 			}
 		});		
 	}

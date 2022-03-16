@@ -1087,7 +1087,7 @@ else if($action == "loadDataProdukPager"){
 									".$where_filter."
 								GROUP BY a.`id`
 								ORDER BY a.`id` DESC
-								LIMIT 300 OFFSET 0
+								LIMIT 100 OFFSET 0
 								;");
 	
 	foreach($res['data'] as $key => $val){
