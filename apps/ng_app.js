@@ -3292,7 +3292,7 @@ app.controller('ctrlProdukPager', function($rootScope,$scope,$location,$http){
 			$scope.datatables = null;
 		}
 		var data_param = {};
-			data_param['action'] = "loadDataProduk";
+			data_param['action'] = "loadDataProdukPager";
 			data_param['data_user'] = $rootScope.session_user;
 			data_param['data_filter'] = data_filter;
 			//console.log(data_param);
