@@ -365,6 +365,7 @@ else if($action == "addOrder"){
 									berat = '".$total_berat."',
 									expedisi = 'custom',
 									expedisi_service = '".$alamat_tujuan['jasa_kirim']."',
+									pembayaran = '".$alamat_tujuan['pembayaran']."',
 									biaya_kirim = '0',
 									total_ongkir = '0',
 									id_customer = '".$alamat_tujuan['id_customer']."'
