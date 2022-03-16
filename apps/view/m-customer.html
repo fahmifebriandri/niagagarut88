@@ -166,6 +166,11 @@
 			  <option value="0">Tidak</option>
 			</select>
 		  </div>
+		  <hr ng-if="data_form_customer.action == 'updateCustomer'" />
+		  <div class="form-group" ng-if="data_form_customer.action == 'updateCustomer'">
+			<label for="reset_password">Reset Password</label>
+			<input type="text" class="form-control" id="reset_password" placeholder="Input password baru" ng-model="data_form_customer.reset_password">
+		  </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -786,6 +786,9 @@ else if($action == "updateCustomer"){
 		$return['result'] = $data_customer['nama']." : ".count($res);
 		$return['message'] = "Customer dengan no telepon dan email ini sudah terdaftar!";
 	}else{
+		if(isset($data_customer['reset_password']) and trim($data_customer['reset_password']) != ""){
+			$reset_password = " password = '".md5($data_customer['reset_password'])."', ";
+		}
 		$result = db_exec("UPDATE `tb_customer` SET 
 												id_membership = '".$data_customer['id_membership']."',
 												nama_lengkap = '".$data_customer['nama_lengkap']."',
@@ -798,10 +801,12 @@ else if($action == "updateCustomer"){
 												kode_pos = '".$data_customer['kode_pos']."',
 												alamat_lengkap = '".$data_customer['alamat_lengkap']."',
 												aktif = '".$data_customer['aktif']."',
+												".@$reset_password."
 												updated_by = '".$id_user."'
 											WHERE
 												id = '".$data_customer['id']."'
 											;");
+											
 		$return['result'] = $result;
 		$return['message'] = "Anda berhasil update Customer!";
 	}
