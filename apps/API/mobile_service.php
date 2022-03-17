@@ -18,7 +18,7 @@ if($action == "get_home_data"){
 }
 else if($action == "loadDataKurir"){
 	$res = array();
-	$res = db_select("SELECT * FROM `tb_kurir` WHERE hapus = '0' and id_user_owner = ".$id_user_owner." ORDER BY `tb_kurir`.`nama` ASC;");
+	$res = db_select("SELECT * FROM `tb_kurir` WHERE hapus = '0' and aktif = '1' and id_user_owner = ".$id_user_owner." ORDER BY `tb_kurir`.`nama` ASC;");
 	echo json_encode($res);
 }
 else if($action == "loadDataPropinsi"){
@@ -207,6 +207,13 @@ else if($action == "userLogin"){
 								;");
 								
 	$res['toko'] = db_select("SELECT *  FROM `tb_profile_toko`
+								WHERE 
+								id_user_owner = '".$id_user_owner."'
+								;");
+	echo json_encode($res);
+}
+else if($action == "loadProfileToko"){
+	$res = db_select("SELECT *  FROM `tb_profile_toko`
 								WHERE 
 								id_user_owner = '".$id_user_owner."'
 								;");

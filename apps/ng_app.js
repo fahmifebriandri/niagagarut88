@@ -3286,6 +3286,20 @@ app.controller('ctrlProdukPager', function($rootScope,$scope,$location,$http){
 	$scope.loadFilterData = function () {
 		$scope.loadDataProduk($scope.data_filter);
 	}
+	$scope.selectPage = function (nPage) {
+		var currentId = parseInt($("ul.pagination>li.page-item.active").attr("id"));
+		if(nPage == "next"){
+			nPage = currentId+1;
+		}else if(n == "prev"){
+			nPage = currentId-1;
+		}
+		if(nPage < 1) nPage = 1;
+		$("ul.pagination>li.page-item").removeClass("active");
+		$("ul.pagination>li.page-item#"+nPage).addClass("active");
+		
+		$scope.data_filter.load_produk_page = nPage;
+		$scope.loadDataProduk($scope.data_filter);
+	}
 	$scope.loadDataProduk = function (data_filter = null) {
 		if($scope.datatables !== null){
 			$scope.datatables.destroy();

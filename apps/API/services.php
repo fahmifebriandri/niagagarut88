@@ -1071,10 +1071,14 @@ else if($action == "loadDataProdukPager"){
 	$id_user_owner=($created_by == 1)?$id_user:$created_by;
 	$res = array();
 	$where_filter = "";
+	$limit_query = " LIMIT 100 OFFSET 0 ";
 	if(isset($request['data_filter']) and $request['data_filter'] != null and $request['data_filter'] != ""){
 		$data_filter = $request['data_filter'];
 		if($data_filter['id_kategori']){
 			$where_filter = " and a.id_kategori = '".$data_filter['id_kategori']."' ";
+		}
+		if($data_filter['load_produk_page']){
+			$limit_query = " LIMIT 100 OFFSET ".(($data_filter['load_produk_page']-1)*100)." ";
 		}
 	}
 	$res = db_select("SELECT a.*, b.kode as kode_kategori, b.nama as nama_kategori, c.*, d.nama as nama_suplier FROM `tb_produk` a
@@ -1087,7 +1091,7 @@ else if($action == "loadDataProdukPager"){
 									".$where_filter."
 								GROUP BY a.`id`
 								ORDER BY a.`id` DESC
-								LIMIT 100 OFFSET 0
+								".$limit_query."
 								;");
 	
 	foreach($res['data'] as $key => $val){
