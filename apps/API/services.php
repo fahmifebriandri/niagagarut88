@@ -1069,7 +1069,8 @@ else if($action == "loadDataProdukPager"){
 	$id_user = $data_user['id'];
 	$created_by = $data_user['created_by'];
 	$id_user_owner=($created_by == 1)?$id_user:$created_by;
-	$res = array();
+	$result = array();
+	$res_product_pager = array();
 	$where_filter = "";
 	$limit_set = 50;
 	$limit_query = " LIMIT ".$limit_set." OFFSET 0 ";
@@ -1082,7 +1083,7 @@ else if($action == "loadDataProdukPager"){
 			$limit_query = " LIMIT ".$limit_set." OFFSET ".(($data_filter['load_produk_page']-1)*$limit_set)." ";
 		}
 	}
-	$res = db_select("SELECT a.*, b.kode as kode_kategori, b.nama as nama_kategori, c.*, d.nama as nama_suplier FROM `tb_produk` a
+	$res_product_pager = db_select("SELECT a.*, b.kode as kode_kategori, b.nama as nama_kategori, c.*, d.nama as nama_suplier FROM `tb_produk` a
 								LEFT JOIN tb_kategori b ON b.id = a.id_kategori
 								LEFT JOIN tb_produk_varian c ON c.id_produk = a.id
 								LEFT JOIN tb_suplier d ON d.id = a.id_suplier
@@ -1095,22 +1096,24 @@ else if($action == "loadDataProdukPager"){
 								".$limit_query."
 								;");
 	
-	foreach($res['data'] as $key => $val){
+	foreach($res_product_pager['data'] as $key => $val){
 		$data_varian = db_select("SELECT * FROM `tb_produk_varian` WHERE id_produk = '".$val['id_produk']."'; ");
-		$res['data'][$key]['data_varian'] = $data_varian['data'];
+		$res_product_pager['data'][$key]['data_varian'] = $data_varian['data'];
 		
 		$data_grosir = db_select("SELECT * FROM `tb_produk_grosir` WHERE id_produk = '".$val['id_produk']."'; ");
-		$res['data'][$key]['data_grosir'] = $data_grosir['data'];
+		$res_product_pager['data'][$key]['data_grosir'] = $data_grosir['data'];
 		
-		foreach($res['data'][$key] as $key1 => $val1){
+		foreach($res_product_pager['data'][$key] as $key1 => $val1){
 			if(is_string($val1)){
-				$res['data'][$key][$key1] = utf8_encode($val1);
+				$res_product_pager['data'][$key][$key1] = utf8_encode($val1);
 			}
 		}
 		
 	}
 	
-	echo json_encode($res);
+	$result['data_product_pager'] = $res_product_pager;
+	$result['data_product_pager_length'] = $res_product_pager['num_rows'];
+	echo json_encode($result);
 }
 else if($action == "addProduk"){
 	$data_user = $request['data_user'];

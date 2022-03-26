@@ -3141,6 +3141,8 @@ app.controller('ctrlProdukPager', function($rootScope,$scope,$location,$http){
 	$scope.breadcrumb = '<li class="breadcrumb-item"><a href="#!/produk">Produk</a></li>'+
 						'<li class="breadcrumb-item active" aria-current="page">Input</li>';
 
+	$scope.pageactive = 1;
+	$scope.pagelength = 0;
 	$scope.datatables = null;
 	$scope.data_table_produk = {};
 	$scope.data_form_produk = {};
@@ -3297,6 +3299,7 @@ app.controller('ctrlProdukPager', function($rootScope,$scope,$location,$http){
 		$("ul.pagination>li.page-item").removeClass("active");
 		$("ul.pagination>li.page-item#"+nPage).addClass("active");
 		
+		$scope.pageactive = nPage;
 		$scope.data_filter.load_produk_page = nPage;
 		$scope.loadDataProduk($scope.data_filter);
 	}
@@ -3320,7 +3323,8 @@ app.controller('ctrlProdukPager', function($rootScope,$scope,$location,$http){
 				openLoadingLoadApp();
 			},
 			complete: function(response) {
-				var response = response.data;
+				$scope.pagelength = response.data.data_product_pager_length;
+				var response = response.data.data_product_pager;
 				//console.log(typeof(response.data));
 				//console.log(response);
 				if(typeof(response.data) == "object"){
@@ -3328,6 +3332,9 @@ app.controller('ctrlProdukPager', function($rootScope,$scope,$location,$http){
 				}else{
 					$scope.data_table_produk = {};
 				}
+				
+				
+				
 				//angular.element(document).ready(function(){});
 				/*
 				setTimeout(function(){

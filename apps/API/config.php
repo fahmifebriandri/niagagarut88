@@ -18,6 +18,7 @@ function db_select($query){
 	$conn = db_conn();
 	$result = $conn->query($query);
 	$return = array();
+	$return['num_rows'] = $result->num_rows;
 	if($result->num_rows > 0){
 		$return['message'] = $result->num_rows." results";
 		$return['data'] = $result->fetch_all(MYSQLI_ASSOC);
