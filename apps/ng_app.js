@@ -3290,7 +3290,7 @@ app.controller('ctrlProdukPager', function($rootScope,$scope,$location,$http){
 		var currentId = parseInt($("ul.pagination>li.page-item.active").attr("id"));
 		if(nPage == "next"){
 			nPage = currentId+1;
-		}else if(n == "prev"){
+		}else if(nPage == "prev"){
 			nPage = currentId-1;
 		}
 		if(nPage < 1) nPage = 1;
