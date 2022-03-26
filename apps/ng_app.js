@@ -3300,6 +3300,7 @@ app.controller('ctrlProdukPager', function($rootScope,$scope,$location,$http){
 		$("ul.pagination>li.page-item#"+nPage).addClass("active");
 		
 		$scope.pageactive = nPage;
+		console.log($scope.pageactive);
 		$scope.data_filter.load_produk_page = nPage;
 		$scope.loadDataProduk($scope.data_filter);
 	}
