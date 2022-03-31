@@ -20,7 +20,16 @@
             <h1 class="h3 mb-0 text-gray-800">Manajemen Produk</h1>
             <a href="javascript:void(0);" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" ng-click="addProduk();"><i class="fas fa-plus fa-sm text-white-50"></i> Tambah</a>
           </div>
-		  <div class="row">
+		  <div class="row mb-3">
+			<div class="col">
+				<div class="input-group">
+				  <input type="text" class="form-control" placeholder="Cari Produk" ng-model="data_filter.cari_produk">
+				  <div class="input-group-append">
+					<button class="btn btn-primary" type="button" ng-click="loadFilterData();">Cari</button>
+				  </div>
+				</div>
+			</div>
+			<div class="col">&nbsp;</div>
 			<div class="col">
 				<form class="form-inline float-right">
 				  <div class="form-group mr-sm-3 mb-2">
@@ -109,13 +118,26 @@
 				  <ul class="pagination">
 					<li class="page-item"><a class="page-link" href="javascript:void(0);" ng-click="selectPage('prev');">Previous</a></li>
 					
-					<!-- pageactive 
-					<li class="page-item active" id="1"><a class="page-link" href="javascript:void(0);" ng-click="selectPage(1);">1</a></li>
-					<li class="page-item" id="2"><a class="page-link" href="javascript:void(0);" ng-click="selectPage(2);">2</a></li>
-					<li class="page-item" id="3"><a class="page-link" href="javascript:void(0);" ng-click="selectPage(3);">3</a></li>
-					-->
-					<li class="page-item active" id="{{pageactive}}"><a class="page-link" href="javascript:void(0);">{{pageactive}}</a></li>
-					<li class="page-item"><a class="page-link" href="javascript:void(0);" ng-click="selectPage('next');">Next</a></li>
+					<li class="page-item" id="{{(data_filter.load_produk_page-2)}}" ng-show="data_filter.load_produk_page > 2"><a class="page-link" href="javascript:void(0);" ng-click="selectPage((data_filter.load_produk_page-2));">{{(data_filter.load_produk_page-2)}}</a></li>
+					<li class="page-item" id="{{(data_filter.load_produk_page-1)}}" ng-show="data_filter.load_produk_page > 1"><a class="page-link" href="javascript:void(0);" ng-click="selectPage((data_filter.load_produk_page-1));">{{(data_filter.load_produk_page-1)}}</a></li>
+					
+					<li class="page-item active" id="{{data_filter.load_produk_page}}"><a class="page-link" href="javascript:void(0);" ng-click="selectPage((data_filter.load_produk_page));">{{data_filter.load_produk_page}}</a></li>
+					
+					<li class="page-item" id="{{(data_filter.load_produk_page+1)}}" ng-show="(data_filter.load_produk_page+1) <= pagelength"><a class="page-link" href="javascript:void(0);" ng-click="selectPage((data_filter.load_produk_page+1));" >{{(data_filter.load_produk_page+1)}}</a></li>
+					<li class="page-item" id="{{(data_filter.load_produk_page+2)}}" ng-show="(data_filter.load_produk_page+2) <= pagelength"><a class="page-link" href="javascript:void(0);" ng-click="selectPage((data_filter.load_produk_page+2));" >{{(data_filter.load_produk_page+2)}}</a></li>
+					
+					<li class="page-item" ng-show="data_filter.load_produk_page < pagelength"><a class="page-link" href="javascript:void(0);" ng-click="selectPage('next');">Next</a></li>
+					
+
+					<li class="page-item pl-3">
+						
+						<select class="form-control" ng-model="data_filter.load_produk_page" ng-change="selectPage(data_filter.load_produk_page);">
+							<option value="" disabled="disabled" selected>Pilih...</option>
+							<option ng-repeat="x in [].constructor(pagelength) track by $index" ng-selected="data_filter.load_produk_page == ($index+1)" >{{($index+1)}}</option>
+						</select>
+						
+						
+					</li>
 				  </ul>
 				</nav>
 			  </div>

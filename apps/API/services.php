@@ -59,9 +59,12 @@ else if($action == "appLogin"){
 								SELECT a.* FROM `tb_profile_toko` a
 								INNER JOIN `app_user` b ON b.id = a.id_user_owner OR b.id_user_owner = a.id_user_owner
 								WHERE 
+								b.id_user_owner = (SELECT id_user_owner FROM app_user WHERE email = '".$data_user['email']."' and password = '".md5($data_user['password'])."')
+	");
+	/*
 								b.email = '".$data_user['email']."' and 
 								b.password = '".md5($data_user['password'])."' 
-	");
+	*/
 	echo json_encode($res);
 }
 else if($action == "loadDataUser"){
@@ -652,6 +655,8 @@ else if($action == "addKurir"){
 	}else{
 		$result = db_insert("INSERT INTO `tb_kurir` SET
 							nama = '".$data_kurir['nama']."',
+							biaya = '".$data_kurir['biaya']."',
+							satuan = '".$data_kurir['satuan']."',
 							aktif = '".$data_kurir['aktif']."',
 							id_user_owner = '".$id_user_owner."',
 							created_by = '".$id_user."'
@@ -676,6 +681,8 @@ else if($action == "updateKurir"){
 	}else{
 		$result = db_exec("UPDATE `tb_kurir` SET 
 												nama = '".$data_kurir['nama']."',
+												biaya = '".$data_kurir['biaya']."',
+												satuan = '".$data_kurir['satuan']."',
 												aktif = '".$data_kurir['aktif']."',
 												updated_by = '".$id_user."'
 											WHERE
@@ -1076,11 +1083,14 @@ else if($action == "loadDataProdukPager"){
 	$limit_query = " LIMIT ".$limit_set." OFFSET 0 ";
 	if(isset($request['data_filter']) and $request['data_filter'] != null and $request['data_filter'] != ""){
 		$data_filter = $request['data_filter'];
-		if($data_filter['id_kategori']){
-			$where_filter = " and a.id_kategori = '".$data_filter['id_kategori']."' ";
-		}
 		if($data_filter['load_produk_page']){
 			$limit_query = " LIMIT ".$limit_set." OFFSET ".(($data_filter['load_produk_page']-1)*$limit_set)." ";
+		}
+		if(isset($data_filter['id_kategori']) and trim($data_filter['id_kategori']) != ""){
+			$where_filter .= " and a.id_kategori = '".$data_filter['id_kategori']."' ";
+		}
+		if(isset($data_filter['cari_produk']) and trim($data_filter['cari_produk']) != ""){
+			$where_filter .= " and (a.nama_barang like '%".$data_filter['cari_produk']."%' or a.deskripsi like '%".$data_filter['cari_produk']."%') ";
 		}
 	}
 	$res_product_pager = db_select("SELECT a.*, b.kode as kode_kategori, b.nama as nama_kategori, c.*, d.nama as nama_suplier FROM `tb_produk` a
@@ -1111,8 +1121,16 @@ else if($action == "loadDataProdukPager"){
 		
 	}
 	
+	$data_product_pager_length = db_select("SELECT count(*) as length  FROM `tb_produk` a
+									where 
+										a.hapus='0' 
+										and a.id_user_owner = '".$id_user_owner."' 
+										".$where_filter."
+									GROUP BY a.`id`
+									;");
+									
 	$result['data_product_pager'] = $res_product_pager;
-	$result['data_product_pager_length'] = $res_product_pager['num_rows'];
+	$result['data_product_pager_length'] = $data_product_pager_length['num_rows']; //['num_rows']
 	echo json_encode($result);
 }
 else if($action == "addProduk"){

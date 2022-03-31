@@ -363,6 +363,34 @@ else if($action == "addOrder"){
 									diskon_tipe = '".$alamat_tujuan['tipe_diskon_membership']."',
 									diskon_nilai = '".$alamat_tujuan['nilai_diskon_membership']."'
 								;");
+								
+	//kurangi jarak_kirim minimal
+	$jarak_kirim = 0;
+	$max_jarak = 0;
+	if(isset($alamat_tujuan['jarak_num'])) $jarak_kirim = $alamat_tujuan['jarak_num'];
+	
+	$res_profile_toko = db_select("select * from tb_profile_toko where id_user_owner = '".$id_user_owner."';")['data'];
+	if(isset($res_profile_toko[0]) and count($res_profile_toko[0]) > 0){
+		$max_jarak = $res_profile_toko[0]['max_jarak'];
+	}
+	
+	$jarak_kirim_real = $jarak_kirim;
+	$jarak_kirim_berongkos = max(($jarak_kirim - $max_jarak), 0);
+	
+	$biaya_kirim = 0;
+	$biaya_kirim_satuan = "";
+	$total_ongkir = 0;
+	$res_kurir = db_select("select * from tb_kurir where hapus = '0' and id_user_owner = '".$id_user_owner."';")['data'];
+	if(isset($res_kurir[0]) and count($res_kurir[0]) > 0){
+		$biaya_kirim = $res_kurir[0]['biaya'];
+		$biaya_kirim_satuan = $res_kurir[0]['satuan'];
+		if($biaya_kirim_satuan == "KG"){
+			$total_ongkir = $biaya_kirim * ceil($total_berat/1000);
+		}else if($biaya_kirim_satuan == "KM"){
+			$total_ongkir = $biaya_kirim * $jarak_kirim_berongkos;
+		}
+	}
+	
 	
 	$id_suplier_gen_by_app = '{"pengirim_produk":"pribadi", "pengirim_produk_kota":"", "pengirim_produk_id":""}';
 	$result['id_order_suplier'] = db_insert("INSERT INTO `tb_order_suplier` SET
@@ -370,11 +398,14 @@ else if($action == "addOrder"){
 									id_suplier = '',
 									id_suplier_gen_by_app = '".$id_suplier_gen_by_app."',
 									berat = '".$total_berat."',
+									jarak_kirim_real = '".$jarak_kirim_real."',
+									jarak_kirim_berongkos = '".$jarak_kirim_berongkos."',
 									expedisi = 'custom',
 									expedisi_service = '".$alamat_tujuan['jasa_kirim']."',
 									pembayaran = '".$alamat_tujuan['pembayaran']."',
-									biaya_kirim = '0',
-									total_ongkir = '0',
+									biaya_kirim = '".$biaya_kirim."',
+									biaya_kirim_satuan = '".$biaya_kirim_satuan."',
+									total_ongkir = '".$total_ongkir."',
 									id_customer = '".$alamat_tujuan['id_customer']."'
 					;");
 	

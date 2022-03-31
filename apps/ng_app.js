@@ -1897,14 +1897,17 @@ app.controller('ctrlKurir', function($rootScope,$scope,$location,$http){
 	}
 	$scope.addKurir = function () {
 		//console.log(data_kurir);
-		$scope.data_form_kurir = {}
+		$scope.data_form_kurir = {};
 		$scope.data_form_kurir.action = 'addKurir';
+		$scope.data_form_kurir.biaya = 0;
+		$scope.data_form_kurir.satuan = 'KG';
 		$scope.data_form_kurir.aktif = '1';
 		angular.element(document.querySelector('#modalFormKurir')).modal('show');
 	}
 	$scope.updateKurir = function (data_kurir) {
 		//console.log(data_kurir);
 		$scope.data_form_kurir = data_kurir;
+		$scope.data_form_kurir.biaya = parseInt($scope.data_form_kurir.biaya);
 		$scope.data_form_kurir.action = "updateKurir";
 		angular.element(document.querySelector('#modalFormKurir')).modal('show');
 	}
@@ -3141,14 +3144,13 @@ app.controller('ctrlProdukPager', function($rootScope,$scope,$location,$http){
 	$scope.breadcrumb = '<li class="breadcrumb-item"><a href="#!/produk">Produk</a></li>'+
 						'<li class="breadcrumb-item active" aria-current="page">Input</li>';
 
-	$scope.pageactive = 1;
 	$scope.pagelength = 0;
 	$scope.datatables = null;
 	$scope.data_table_produk = {};
 	$scope.data_form_produk = {};
 	$scope.data_form_produk.data_varian = [];
 	$scope.data_form_produk.data_grosir = [];
-	$scope.data_filter = {};
+	$scope.data_filter = { load_produk_page: 1};
 	$scope.data_table_kategori = {};
 	$scope.data_table_suplier = [];
 	$scope.data_produk_nama_barang = [];
@@ -3296,13 +3298,14 @@ app.controller('ctrlProdukPager', function($rootScope,$scope,$location,$http){
 			nPage = currentId-1;
 		}
 		if(nPage < 1) nPage = 1;
-		$("ul.pagination>li.page-item").removeClass("active");
-		$("ul.pagination>li.page-item#"+nPage).addClass("active");
 		
-		$scope.pageactive = nPage;
-		console.log($scope.pageactive);
-		$scope.data_filter.load_produk_page = nPage;
+		$scope.data_filter.load_produk_page = parseInt(nPage);
 		$scope.loadDataProduk($scope.data_filter);
+		
+		setTimeout(function(){
+			$("ul.pagination>li.page-item").removeClass("active");
+			$("ul.pagination>li.page-item#"+nPage).addClass("active");
+		}, 1000);
 	}
 	$scope.loadDataProduk = function (data_filter = null) {
 		if($scope.datatables !== null){
@@ -3324,7 +3327,8 @@ app.controller('ctrlProdukPager', function($rootScope,$scope,$location,$http){
 				openLoadingLoadApp();
 			},
 			complete: function(response) {
-				$scope.pagelength = response.data.data_product_pager_length;
+				$scope.pagelength = Math.ceil((response.data.data_product_pager_length/50));
+				//console.log($scope.pagelength);
 				var response = response.data.data_product_pager;
 				//console.log(typeof(response.data));
 				//console.log(response);
@@ -3849,6 +3853,11 @@ app.controller('ctrlOrder', function($rootScope,$scope,$location,$http){
 		}
 		//$scope.loadDataKategori();
 		$scope.loadFilterData();
+		console.log("initLoad loadFilterDataProduct");
+		setTimeout(function(){
+			$scope.loadFilterData();
+			console.log("setTimeout 60000 loadFilterDataProduct");
+		}, 60000);
 	}
 	$scope.initLoad();
 });

@@ -33,6 +33,7 @@
                     <tr>
                       <th>#</th>
 					  <th>Kurir</th>
+					  <th>Biaya</th>
                       <th>Aktif</th>
                       <th>Aksi</th>
                     </tr>
@@ -41,6 +42,7 @@
                     <tr>
                       <th>#</th>
 					  <th>Kurir</th>
+					  <th>Biaya</th>
                       <th>Aktif</th>
                       <th>Aksi</th>
                     </tr>
@@ -49,6 +51,7 @@
                     <tr ng-repeat="x in data_table_kurir">
                       <td>{{ $index + 1 }}</td>
 					  <td>{{x.nama}}</td>
+					  <td>{{x.biaya}} / {{x.satuan}}</td>
                       <td>{{aktifLabel(x.aktif)}}</td>
                       <td class="text-center">
 						<button type="button" class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm" ng-click="updateKurir(x);"><i class="fas fa-edit fa-sm text-white-50"></i> Edit</button>
@@ -93,6 +96,29 @@
 			  <div class="form-group col">
 				<label for="kurir">Kurir</label>
 				<input type="text" class="form-control" id="kurir" placeholder="Input kurir" ng-model="data_form_kurir.nama" required="required">
+			  </div>
+		  </div>
+		  <div class="row">
+			  <div class="form-group col">
+				<label for="biaya">Biaya</label>
+				<input type="number" class="form-control" id="biaya" placeholder="Input biaya" ng-model="data_form_kurir.biaya" required="required">
+			  </div>
+		  </div>
+		  <div class="row">
+			  <div class="form-group col">
+				<label for="satuan">Satuan</label>
+				<div class="form-check">
+				  <input class="form-check-input" type="radio" id="KM" value="KM" ng-model="data_form_kurir.satuan">
+				  <label class="form-check-label" for="KM">
+					KM
+				  </label>
+				</div>
+				<div class="form-check">
+				  <input class="form-check-input" type="radio" id="KG" value="KG" ng-model="data_form_kurir.satuan">
+				  <label class="form-check-label" for="KG">
+					KG
+				  </label>
+				</div>
 			  </div>
 		  </div>
 		  <div class="form-group">
