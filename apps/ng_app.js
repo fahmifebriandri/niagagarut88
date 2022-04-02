@@ -504,9 +504,16 @@ app.controller('ctrlIndex', function($rootScope,$scope,$location,$http,$window){
 							tHarga += parseInt((row['cart_harga_jual']-$scope.getValueDiskon(row['cart_harga_jual'],row['diskon'],row['diskon_tipe']))*row['cart_qty']);
 						}
 						tBayar += tHarga;
-						tOngkir += tSubOngkir = parseInt($scope.getSuplierByID(indx,tb_order_suplier)['biaya_kirim'])*Math.ceil(parseInt($scope.getSuplierByID(indx,tb_order_suplier)['berat'])/1000);
+						
+						if($scope.getSuplierByID(indx,tb_order_suplier)['biaya_kirim_satuan'] == "KM"){
+							tOngkir += tSubOngkir = parseInt($scope.getSuplierByID(indx,tb_order_suplier)['biaya_kirim'])*parseInt($scope.getSuplierByID(indx,tb_order_suplier)['jarak_kirim_berongkos']);
+						}else{
+							tOngkir += tSubOngkir = parseInt($scope.getSuplierByID(indx,tb_order_suplier)['biaya_kirim'])*Math.ceil(parseInt($scope.getSuplierByID(indx,tb_order_suplier)['berat'])/1000);
+						}
+						
 						dataHTML += `<tr><td colspan='5'><hr style='border-top:1px dashed black;border-bottom:none;border-left:none;border-right:none;' /></td></tr>`;
 						dataHTML += `<tr><td colspan='5'>Kurir (`+$scope.getSuplierByID(indx,tb_order_suplier)['expedisi_service']+`): `+$scope.formatRupiah($scope.getSuplierByID(indx,tb_order_suplier)['biaya_kirim'])+`</td></tr>`;
+						dataHTML += `<tr><td colspan='5'>Jarak Kirim (Real/Berongkos): `+$scope.getSuplierByID(indx,tb_order_suplier)['jarak_kirim_real']+` / `+$scope.getSuplierByID(indx,tb_order_suplier)['jarak_kirim_berongkos']+`</td></tr>`;
 						dataHTML += `<tr><td colspan='5'>Total Berat: `+(parseInt($scope.getSuplierByID(indx,tb_order_suplier)['berat'])/1000)+`(kg)</td></tr>`;
 						dataHTML += `<tr><td colspan='5'>Total Qty: `+tQty+`</td></tr>`;
 						dataHTML += `<tr><td colspan='5'>Total Ongkir: `+$scope.formatRupiah(tSubOngkir)+`</td></tr>`;
@@ -3524,6 +3531,7 @@ app.controller('ctrlOrder', function($rootScope,$scope,$location,$http){
 	$scope.data_filter = {};
 	$scope.selectedOrder = {};
 	$scope.loadFilterData = function () {
+		//console.log($scope.data_filter);
 		$scope.loadDataOrder($scope.data_filter);
 		$scope.loadQuickReportOrder($scope.data_filter);
 	}
@@ -3803,8 +3811,15 @@ app.controller('ctrlOrder', function($rootScope,$scope,$location,$http){
 		var id_order = $scope.data_mobile_order.tb_order.id;
 		var status_order = $scope.data_mobile_order.tb_order.status_order;
 		var biaya_kirim = $scope.data_mobile_order.tb_order_suplier.biaya_kirim;
+		var biaya_kirim_satuan = $scope.data_mobile_order.tb_order_suplier.biaya_kirim_satuan
+		var jarak_kirim_berongkos = $scope.data_mobile_order.tb_order_suplier.jarak_kirim_berongkos
 		var total_berat = Math.round($scope.total_berat/1000);
-		var total_ongkir = biaya_kirim * total_berat;
+		
+		if(biaya_kirim_satuan == "KM"){
+			var total_ongkir = biaya_kirim * jarak_kirim_berongkos;
+		}else{
+			var total_ongkir = biaya_kirim * total_berat;
+		}
 		//console.log(id_order);
 		//console.log(status_order);
 		//console.log(biaya_kirim);

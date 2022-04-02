@@ -287,7 +287,15 @@
 				<div class="col">
 					<div class="form-group color-primer">
 						<label for="">Ekpedisi</label>
-						<input type="text" class="form-control" ng-model="data_mobile_order.tb_order_suplier.expedisi_service" readonly="readonly">
+						<input type="text" class="form-control" value="{{data_mobile_order.tb_order_suplier.expedisi_service}} / {{(data_mobile_order.tb_order_suplier.biaya_kirim_satuan == '')?'KG':data_mobile_order.tb_order_suplier.biaya_kirim_satuan}}" readonly="readonly">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="form-group color-primer">
+						<label for="">Jarak Kirim (Real/Berongkos)</label>
+						<input type="text" class="form-control" value="{{data_mobile_order.tb_order_suplier.jarak_kirim_real}} / {{data_mobile_order.tb_order_suplier.jarak_kirim_berongkos}}" readonly="readonly">
 					</div>
 				</div>
 			</div>

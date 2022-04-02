@@ -11,7 +11,12 @@ db_exec
 $action = $_REQUEST['action'];
 $id_user_owner = "101";
 
-if($action == "get_home_data"){
+if($action == "get_mobile_version"){
+	$res = array();
+	$res = db_select("SELECT version FROM `app_update_version` WHERE id_user_owner = ".$id_user_owner." ORDER BY `app_update_version`.`id` DESC LIMIT 1;");
+	echo json_encode($res);
+}
+else if($action == "get_home_data"){
 	$res = array();
 	$res['kategori'] = db_select("SELECT * FROM `tb_kategori` WHERE hapus = '0' and id_user_owner = ".$id_user_owner." ORDER BY `tb_kategori`.`nama` ASC;");
 	echo json_encode($res);
@@ -380,7 +385,7 @@ else if($action == "addOrder"){
 	$biaya_kirim = 0;
 	$biaya_kirim_satuan = "";
 	$total_ongkir = 0;
-	$res_kurir = db_select("select * from tb_kurir where hapus = '0' and id_user_owner = '".$id_user_owner."';")['data'];
+	$res_kurir = db_select("select * from tb_kurir where hapus = '0' and nama = '".$alamat_tujuan['jasa_kirim']."' and id_user_owner = '".$id_user_owner."';")['data'];
 	if(isset($res_kurir[0]) and count($res_kurir[0]) > 0){
 		$biaya_kirim = $res_kurir[0]['biaya'];
 		$biaya_kirim_satuan = $res_kurir[0]['satuan'];
